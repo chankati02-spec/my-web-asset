@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charles & Madeline — The Wedding Celebration</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,600;1,300&family=Noto+Serif+TC:wght@300;400;600;700&family=Oswald:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-deep-indigo: #234386;
+            --color-honey-gold: #ffc400;
+            --color-burnt-orange: #ed7328;
+            --color-sky-blue: #6aa8dc;
+            --color-warm-sand: #d2b68c;
+            --color-mint-sage: #a2d3a6;
+            --color-ink-black: #000000;
+            --color-pure-white: #ffffff;
+            --color-cream-paper: #fbf9f6;
+            --color-soft-shadow: rgba(0, 0, 0, 0.08);
+
+            --font-hwt-artz: 'Bebas Neue', sans-serif;
+            --font-delivery-note: 'Oswald', sans-serif;
+            --font-sandman: 'Playfair Display', serif;
+            --font-axiforma: 'Inter', sans-serif;
+            --font-avant-garde: 'Jost', sans-serif;
+            --font-caveat: 'Caveat', cursive;
+            --font-serif-zh: 'Noto Serif TC', serif;
+        }
+
+        body {
+            background-color: var(--color-cream-paper);
+            color: var(--color-ink-black);
+            font-family: var(--font-axiforma);
+            overflow-x: hidden;
+            transition: background-color 0.6s ease, color 0.6s ease;
+        }
+
+        .tracking-editorial-wide {
+            letter-spacing: 0.18em;
+        }
+        .tracking-editorial-max {
+            letter-spacing: 0.25em;
+        }
+
+        /* Typography Helpers */
+        .font-hwt { font-family: var(--font-hwt-artz); }
+        .font-delivery { font-family: var(--font-delivery-note); }
+        .font-sandman { font-family: var(--font-sandman); }
+        .font-script { font-family: var(--font-caveat); }
+        .font-avant { font-family: var(--font-avant-garde); }
+        .font-zh { font-family: var(--font-serif-zh); }
+
+        /* Premium asymmetric card shadows conforming to Pa'lais */
+        .palais-shadow {
+            box-shadow: rgba(0, 0, 0, 0.05) -10px 14px 40px 0px;
+        }
+
+        /* Interactive micro-animations */
+        .badge-hover:hover {
+            transform: rotate(-3deg) scale(1.05);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Subtle floating animation for doodles */
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0) rotate(var(--base-rotation, 0deg)); }
+            50% { transform: translateY(-6px) rotate(calc(var(--base-rotation, 0deg) + 2deg)); }
+        }
+        .animate-float-doodle {
+            animation: gentle-float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Fully semi-transparent header that overlays the hero section -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-[#fbf9f6]/40 backdrop-blur-md border-b border-black/5">
+        <div class="max-w-[1200px] mx-auto px-6 py-4 flex justify-between items-center transition-all duration-300" id="nav-container">
+            <!-- Brand Logo -->
+            <a href="#welcome" class="font-hwt text-2xl tracking-editorial-wide text-[var(--color-deep-indigo)] flex items-center gap-2">
+                C <span class="font-script text-3xl text-[var(--color-burnt-orange)] normal-case lowercase -mt-1">&amp;</span> M
+            </a>
+            
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-12 font-avant text-xs font-semibold tracking-editorial-max text-[var(--color-deep-indigo)] uppercase">
+                <a href="#welcome" data-i18n="nav_welcome" class="hover:text-[var(--color-burnt-orange)] transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-[var(--color-burnt-orange)] hover:after:w-full after:transition-all">WELCOME</a>
+                <a href="#countdown-section" data-i18n="nav_countdown" class="hover:text-[var(--color-burnt-orange)] transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-[var(--color-burnt-orange)] hover:after:w-full after:transition-all">COUNTDOWN</a>
+                <a href="#story" data-i18n="nav_story" class="hover:text-[var(--color-burnt-orange)] transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-[var(--color-burnt-orange)] hover:after:w-full after:transition-all">OUR STORY</a>
+                <a href="#details" data-i18n="nav_details" class="hover:text-[var(--color-burnt-orange)] transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-[var(--color-burnt-orange)] hover:after:w-full after:transition-all">THE DETAILS</a>
+                <a href="#rsvp" data-i18n="nav_rsvp" class="hover:text-[var(--color-burnt-orange)] transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-[var(--color-burnt-orange)] hover:after:w-full after:transition-all">RSVP</a>
+            </nav>
+            
+            <!-- Right Actions -->
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleLanguage()" class="font-avant text-[11px] font-bold tracking-widest text-[var(--color-deep-indigo)] border border-black/20 px-3 py-1.5 rounded-full hover:bg-[var(--color-honey-gold)]/20 hover:border-black transition-colors" id="lang-toggle-btn">
+                    ENGLISH
+                </button>
+                <a href="#rsvp" data-i18n="nav_rsvp_btn" class="hidden sm:inline-block font-avant text-xs font-bold tracking-widest bg-[var(--color-deep-indigo)] text-white px-6 py-3 rounded-[32px] hover:bg-[var(--color-burnt-orange)] transition-all duration-300">
+                    RSVP NOW
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Full-Screen Background Cover and Transparent Layout -->
+    <section id="welcome" class="relative min-h-[110vh] w-full flex items-start justify-start overflow-hidden bg-cover bg-center bg-no-repeat" 
+             style="background-image: linear-gradient(rgba(251, 249, 246, 0.1), rgba(251, 249, 246, 0.1)), url('https://us.images.westend61.de/0001190820pw/happy-young-couple-relaxing-on-grass-in-a-park-overhead-view-MGIF00475.jpg');">
+        
+        <!-- Soft organic ambient overlays -->
+        <div class="absolute top-20 left-10 w-48 h-48 bg-[var(--color-mint-sage)] rounded-full filter blur-3xl opacity-20 pointer-events-none"></div>
+        <div class="absolute top-40 right-20 w-64 h-64 bg-[var(--color-honey-gold)] rounded-full filter blur-3xl opacity-15 pointer-events-none"></div>
+
+        <!-- Sticky Container to hold the floating name row scrolling down together with the page viewport -->
+        <div class="absolute inset-0 pointer-events-none z-10">
+            <div class="sticky top-28 left-0 w-full px-6 sm:px-12 md:px-20 pt-6">
+                <!-- Completely transparent editorial name row layout -->
+                <div class="relative max-w-[650px] w-full bg-transparent p-0 flex flex-col items-start text-left pointer-events-auto">
+                    <!-- Single elegant row of name typography with custom white drop shadows for extreme legibility over background foliage -->
+                    <h1 class="font-sandman text-3xl sm:text-4xl md:text-5xl font-black text-[var(--color-deep-indigo)] leading-none select-none tracking-tight"
+                        style="text-shadow: 0 4px 10px rgba(251,249,246,0.9), 0 2px 20px rgba(251,249,246,0.6);">
+                        CHARLES <span class="font-script text-4xl md:text-5xl text-[var(--color-burnt-orange)] inline-block rotate-[-4deg] px-1">&amp;</span> MADELINE
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- DRIBBBLE STYLE ORNAMENTS OVERLAYS AT BOTTOM CORNER OF HERO -->
+        <!-- 1. Whimsical Wiggly Arrow & Sticker Badge (Floating above grass) -->
+        <div class="absolute bottom-[12%] left-[4%] sm:left-[10%] z-20 pointer-events-none drop-shadow-md animate-float-doodle" style="--base-rotation: -6deg;">
+            <svg class="w-16 h-16 text-[var(--color-honey-gold)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 80 Q 30 40 70 50 M 70 50 L 55 42 M 70 50 L 62 65" stroke="var(--color-deep-indigo)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            </svg>
+            <span class="absolute top-[-5px] left-[-15px] bg-[var(--color-deep-indigo)] text-white font-script text-sm py-1 px-3.5 rounded-full transform -rotate-3 whitespace-nowrap shadow-sm">
+                True Love
+            </span>
+        </div>
+
+        <!-- 2. Elegant HK Classic Wedding Stamp Badge (Wired to RSVP) -->
+        <div class="absolute bottom-[10%] right-[4%] sm:right-[12%] z-20">
+            <a href="#rsvp" class="bg-[var(--color-burnt-orange)] border border-black/10 text-white px-6 py-4 rounded-xl palais-shadow flex flex-col items-center badge-hover cursor-pointer min-w-[150px] transform hover:scale-105 transition-transform duration-300">
+                <span class="font-hwt text-lg md:text-2xl tracking-widest leading-none" data-i18n="badge_save_date">誠邀出席</span>
+                <span id="badge-date-text" class="font-zh text-[10px] tracking-widest uppercase mt-1.5 opacity-90">二零二六 ‧ 十月廿四</span>
+            </a>
+        </div>
+
+        <!-- 3. Botanical Line-Art Leaf Burst -->
+        <div class="absolute top-36 right-[5%] z-20 pointer-events-none hidden lg:block animate-float-doodle" style="--base-rotation: 12deg;">
+            <svg class="w-40 h-40 text-[var(--color-deep-indigo)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 90 C 50 50, 20 40, 10 30 C 25 35, 45 40, 50 15 C 55 40, 75 35, 90 30 C 80 40, 50 50, 50 90 Z" stroke="var(--color-deep-indigo)" stroke-width="1.8" fill="#fbf9f6/60"/>
+                <circle cx="50" cy="40" r="3.5" fill="var(--color-honey-gold)"/>
+                <circle cx="35" cy="42" r="2.5" fill="var(--color-mint-sage)"/>
+                <circle cx="65" cy="42" r="2.5" fill="var(--color-mint-sage)"/>
+            </svg>
+        </div>
+
+        <!-- 4. Playful Heart Indicator Floating Element -->
+        <div class="absolute top-[40%] right-[8%] z-20 bg-white border border-black/10 p-3 rounded-full palais-shadow animate-pulse hidden sm:block">
+            <svg class="w-6 h-6 text-[var(--color-burnt-orange)]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+
+        <!-- Organic Wave Cut Bottom Divider -->
+        <div class="absolute bottom-[-1px] left-0 w-full overflow-hidden leading-none z-10">
+            <svg class="relative block w-full h-[40px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C26.9,8.75,55.05,19.58,83.11,28.71,159.27,53.37,238.45,68.12,321.39,56.44Z" fill="#fbf9f6" stroke="#000" stroke-width="1.2" stroke-opacity="0.1"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SECTION 1.5: COUNTDOWN & ADD TO CALENDAR -->
+    <section id="countdown-section" class="relative py-16 px-6 bg-[var(--color-cream-paper)] text-center overflow-hidden">
+        <div class="max-w-[800px] mx-auto relative z-10">
+            <!-- Interlocking Line Work Pattern Frame -->
+            <div class="inline-block border border-black/10 p-8 bg-white palais-shadow rounded-lg space-y-6">
+                <span class="font-avant text-[10px] tracking-editorial-max text-neutral-400 font-bold block uppercase" data-i18n="lbl_timer_intro">CHRONOMETER COUNTDOWN</span>
+                
+                <div class="space-y-1">
+                    <h3 class="font-sandman text-2xl md:text-3xl font-black text-[var(--color-deep-indigo)] leading-tight mb-1" data-i18n="timer_headline">The Secret Ticking of Hearts</h3>
+                    <!-- Actual date requested under subheading aligned dynamically in both languages -->
+                    <p data-i18n="timer_actual_date" class="font-zh text-sm tracking-widest text-[var(--color-burnt-orange)] font-bold">2026年10月24日</p>
+                </div>
+                
+                <!-- Countdown Ticker Columns -->
+                <div class="grid grid-cols-4 gap-4 max-w-sm mx-auto my-6 border-y border-black/5 py-4 font-avant">
+                    <div>
+                        <span id="timer-days" class="font-sandman text-3xl font-bold text-[var(--color-burnt-orange)] block">00</span>
+                        <span class="text-[9px] text-neutral-400 tracking-wider block uppercase" data-i18n="timer_days">DAYS</span>
+                    </div>
+                    <div>
+                        <span id="timer-hours" class="font-sandman text-3xl font-bold text-[var(--color-burnt-orange)] block">00</span>
+                        <span class="text-[9px] text-neutral-400 tracking-wider block uppercase" data-i18n="timer_hours">HOURS</span>
+                    </div>
+                    <div>
+                        <span id="timer-minutes" class="font-sandman text-3xl font-bold text-[var(--color-burnt-orange)] block">00</span>
+                        <span class="text-[9px] text-neutral-400 tracking-wider block uppercase" data-i18n="timer_mins">MINS</span>
+                    </div>
+                    <div>
+                        <span id="timer-seconds" class="font-sandman text-3xl font-bold text-[var(--color-burnt-orange)] block">00</span>
+                        <span class="text-[9px] text-neutral-400 tracking-wider block uppercase" data-i18n="timer_secs">SECS</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic "Add to Calendar" Dropdown Button -->
+                <div class="relative inline-block text-left z-30">
+                    <div>
+                        <button type="button" onclick="toggleCalendarDropdown()" class="inline-flex items-center gap-2 border border-[var(--color-deep-indigo)] text-xs uppercase font-bold tracking-[0.2em] px-6 py-3 rounded-full hover:bg-[var(--color-deep-indigo)] hover:text-white transition-all duration-300">
+                            <i data-lucide="calendar" class="w-4 h-4"></i>
+                            <span data-i18n="btn_save_date">Save Our Wedding Date</span>
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Calendar Dropdown Options Pane -->
+                    <div id="calendar-dropdown" class="hidden absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden transition-all duration-200">
+                        <div class="py-1">
+                            <button onclick="addCalendarAction('google')" class="w-full text-left px-4 py-3 text-xs text-[var(--color-deep-indigo)] font-bold tracking-wide hover:bg-[var(--color-honey-gold)]/20 transition-all flex items-center gap-2">
+                                <i data-lucide="chrome" class="w-4 h-4 text-[var(--color-burnt-orange)]"></i>
+                                Google Calendar (Online)
+                            </button>
+                            <button onclick="addCalendarAction('ical')" class="w-full text-left px-4 py-3 text-xs text-[var(--color-deep-indigo)] font-bold tracking-wide hover:bg-[var(--color-honey-gold)]/20 transition-all flex items-center gap-2">
+                                <i data-lucide="apple" class="w-4 h-4 text-[var(--color-deep-indigo)]"></i>
+                                Apple iOS / Android Device
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: OUR STORY / 關於我們 -->
+    <section id="story" class="relative py-24 px-4 md:px-12 lg:px-24 bg-white border-b border-black/5 overflow-hidden">
+        <div class="absolute -left-12 top-1/4 w-40 h-40 bg-[var(--color-honey-gold)]/15 rounded-full filter blur-xl -z-10 animate-pulse"></div>
+        <div class="absolute right-0 bottom-1/4 w-52 h-52 bg-[var(--color-mint-sage)]/20 rounded-full filter blur-2xl -z-10"></div>
+        
+        <div class="max-w-[1200px] mx-auto">
+            <div class="text-center mb-16">
+                <span class="font-script text-3xl text-[var(--color-burnt-orange)] block" data-i18n="story_cute_label">Handmade Love Chapter</span>
+                <h2 class="font-sandman text-4xl md:text-5xl font-black text-[var(--color-deep-indigo)]" data-i18n="story_title">Our Story</h2>
+                <div class="w-16 h-[1.5px] bg-[var(--color-burnt-orange)] mx-auto mt-4 opacity-70"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Scrapbook Image Wrapper -->
+                <div class="lg:col-span-5 relative story-visual-card">
+                    <div class="absolute -top-6 -left-6 w-16 h-16 opacity-30 text-[var(--color-deep-indigo)] select-none pointer-events-none">
+                        <!-- Botanical Sketch Doodle -->
+                        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 80 Q 30 10 50 50 T 90 20 M30 30 Q 50 10 70 30" />
+                        </svg>
+                    </div>
+                    <div class="relative w-full aspect-[4/5] bg-[var(--color-cream-paper)] border border-black/10 p-4 shadow-xl rounded-lg rotate-[-1.5deg] hover:rotate-0 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" alt="Charles & Madeline Portrait" class="w-full h-full object-cover rounded filter grayscale contrast-110" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800';">
+                        <div class="absolute bottom-8 right-8 bg-white border border-black/10 px-4 py-2 text-center rounded">
+                            <span class="font-avant text-[10px] tracking-widest font-black text-[var(--color-deep-indigo)] block">SINCE 2019</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scrapbook Text Column -->
+                <div class="lg:col-span-7 flex flex-col gap-6 justify-center story-text-card">
+                    <div class="border-l-4 border-[var(--color-burnt-orange)] pl-6 py-2">
+                        <p class="font-zh font-semibold text-lg md:text-2xl italic text-[var(--color-deep-indigo)] leading-relaxed" data-i18n="story_quote">
+                            「從相識到相守，漫長時光因你而溫暖。」
+                        </p>
+                    </div>
+
+                    <div class="font-zh text-neutral-800 space-y-6 text-sm md:text-base leading-relaxed tracking-wide">
+                        <p data-i18n="story_para_1">
+                            我們在喧囂的都市中與彼此相遇，從最初一杯咖啡的羞澀問候，到後來一同越過無數高山與海洋。每一次的歡笑與淚水，都有你的陪伴。
+                        </p>
+                        <p data-i18n="story_para_2">
+                            今天，在至親好友的見證之下，我們將在彼此心上蓋上印章。承諾一生相伴，白首不相離。期待與您在這個充滿喜慶的冬日午後共同慶祝。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 pt-6 border-t border-black/5 font-avant">
+                        <div>
+                            <span class="text-[9px] uppercase tracking-widest text-neutral-400 font-bold block" data-i18n="story_g">Groom / 新郎</span>
+                            <span class="font-sandman text-base font-bold text-[var(--color-deep-indigo)]">Adrian Charles</span>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase tracking-widest text-neutral-400 font-bold block" data-i18n="story_b">Bride / 新娘</span>
+                            <span class="font-sandman text-base font-bold text-[var(--color-deep-indigo)]">Chloe Madeline</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section id="details" class="py-24 max-w-[1200px] mx-auto px-6 relative">
+        <div class="absolute -left-10 top-1/3 w-72 h-72 bg-[var(--color-warm-sand)]/10 rounded-full filter blur-2xl -z-10"></div>
+        <div class="absolute -right-10 bottom-10 w-60 h-60 bg-[var(--color-honey-gold)]/10 rounded-full filter blur-2xl -z-10"></div>
+
+        <div class="text-center mb-16">
+            <h2 class="font-sandman text-4xl md:text-5xl font-black text-[var(--color-deep-indigo)]" data-i18n="details_title">The Wedding Celebration</h2>
+            <p class="font-zh text-lg md:text-2xl font-bold tracking-wide text-[var(--color-burnt-orange)]" data-i18n="details_subtitle">期待與您共度這個美好的日子</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- 1. The Timeline Card -->
+            <div class="bg-white border border-black/10 rounded-lg p-8 palais-shadow relative overflow-hidden transition-transform duration-300 hover:scale-[1.01] rsvp-card">
+                <div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-[var(--color-honey-gold)]"></div>
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="clock" class="w-5 h-5 text-[var(--color-deep-indigo)]"></i>
+                    <h3 class="font-hwt text-2xl tracking-wider uppercase text-[var(--color-deep-indigo)]" data-i18n="card_timeline_title">The Schedule</h3>
+                </div>
+                <ul class="space-y-4 font-avant text-xs font-semibold text-[var(--color-deep-indigo)] uppercase">
+                    <li class="flex justify-between border-b border-black/5 pb-2">
+                        <span data-i18n="time_ceremony">15:30 — Garden Ceremony</span>
+                        <span class="text-[var(--color-burnt-orange)]" data-i18n="time_ceremony_val">證婚典禮</span>
+                    </li>
+                    <li class="flex justify-between border-b border-black/5 pb-2">
+                        <span data-i18n="time_pics">16:30 — Cocktail Reception</span>
+                        <span class="text-[var(--color-burnt-orange)]" data-i18n="time_pics_val">雞尾酒會</span>
+                    </li>
+                    <li class="flex justify-between border-b border-black/5 pb-2">
+                        <span data-i18n="time_dinner">18:00 — Evening Banquet</span>
+                        <span class="text-[var(--color-burnt-orange)]" data-i18n="time_dinner_val">中式晚宴</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span data-i18n="time_dance">20:00 — Live Band & Toasting</span>
+                        <span class="text-[var(--color-burnt-orange)]" data-i18n="time_dance_val">音樂祝酒</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2. The Venue Card -->
+            <div class="bg-white border border-black/10 rounded-lg p-8 palais-shadow relative overflow-hidden transition-transform duration-300 hover:scale-[1.01] rsvp-card">
+                <div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-[var(--color-burnt-orange)]"></div>
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-[var(--color-deep-indigo)]"></i>
+                    <h3 class="font-hwt text-2xl tracking-wider uppercase text-[var(--color-deep-indigo)]" data-i18n="card_venue_title">The Venue</h3>
+                </div>
+                <p class="font-avant text-xs font-bold text-[var(--color-deep-indigo)] uppercase tracking-wide leading-relaxed mb-4" data-i18n="card_venue_desc">
+                    The Emerald Estate, Grand Conservatory & Lawn Garden.<br>
+                    翡翠莊園 ‧ 陽光玻璃溫室與戶外花園
+                </p>
+                <span class="inline-block bg-[var(--color-honey-gold)]/20 text-[var(--color-deep-indigo)] font-avant text-[10px] font-bold px-3 py-1.5 border border-[var(--brand-border)] rounded-full" data-i18n="venue_parking">
+                    🚗 Free valet parking & shuttle service provided
+                </span>
+            </div>
+
+            <!-- 3. The Dresscode Card -->
+            <div class="bg-white border border-black/10 rounded-lg p-8 palais-shadow relative overflow-hidden transition-transform duration-300 hover:scale-[1.01] rsvp-card">
+                <div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-[var(--color-mint-sage)]"></div>
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="shirt" class="w-5 h-5 text-[var(--color-deep-indigo)]"></i>
+                    <h3 class="font-hwt text-2xl tracking-wider uppercase text-[var(--color-deep-indigo)]" data-i18n="card_dress_title">Dress Code</h3>
+                </div>
+                <p class="font-avant text-xs font-bold text-[var(--color-deep-indigo)] uppercase tracking-wide leading-relaxed" data-i18n="card_dress_desc">
+                    Garden Party Formal. We invite you to dress in elegant pastel colors, comfortable shoes for the grass lawn, and lightweight layers.<br><br>
+                    <span class="text-[var(--color-burnt-orange)]">Sage green, champagne, & warm earth tones are highly welcome!</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transition Wave Divider element -->
+    <div class="w-full overflow-hidden leading-none relative bg-[var(--color-honey-gold)]/10 pt-16">
+        <svg class="relative block w-full h-[50px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86C238.45,68.12,159.27,53.37,83.11,28.71,55.05,19.58,26.9,8.75,0,0V120H1200V95.83C1132.19,118.92,1055.71,111.31,985.66,92.83Z" fill="var(--color-honey-gold)" fill-opacity="0.1" stroke="#000" stroke-width="1.2" stroke-opacity="0.05"></path>
+        </svg>
+    </div>
+
+    <!-- RSVP Form Section -->
+    <section id="rsvp" class="py-24 bg-[var(--color-honey-gold)]/10 border-y border-black/5 relative overflow-hidden">
+        <div class="absolute top-1/4 -right-12 w-32 h-32 bg-[var(--color-burnt-orange)]/10 rounded-full border border-black/5 rotate-12 -z-10 hidden md:block"></div>
+        <div class="absolute bottom-1/4 -left-12 w-32 h-32 bg-[var(--color-mint-sage)]/10 rounded-full border border-black/5 rotate-[-12deg] -z-10 hidden md:block"></div>
+
+        <div class="max-w-[650px] mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="font-script text-3xl text-[var(--color-deep-indigo)] block" data-i18n="rsvp_cute_label">Kindly Share Your Response</span>
+                <h2 class="font-sandman text-4xl md:text-5xl font-black text-[var(--color-deep-indigo)] tracking-tight uppercase" data-i18n="rsvp_headline">Will You Share Our Joy?</h2>
+                <p class="font-avant text-xs font-bold tracking-editorial-wide text-[var(--color-deep-indigo)] uppercase mt-2" data-i18n="rsvp_deadline_warn">Please reply by September 15, 2026</p>
+            </div>
+
+            <!-- Main Elegant Form aligned to Google Sheet table structure -->
+            <form id="rsvp-form" class="bg-white border border-black/10 p-8 md:p-12 rounded-xl palais-shadow space-y-8 relative">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1.5 bg-[var(--color-deep-indigo)] rounded-b-md"></div>
+
+                <!-- 1. Attendance Toggle Option -->
+                <div class="space-y-3">
+                    <label class="block font-avant text-xs font-bold uppercase tracking-editorial-wide text-black" data-i18n="lbl_attendance">WILL YOU JOIN OUR CELEBRATION? *</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button type="button" onclick="toggleAttendanceUI(true)" id="btn-attend-yes" class="border border-black bg-[var(--color-deep-indigo)] text-white font-avant text-xs font-bold tracking-widest uppercase py-4 rounded-[32px] transition-all duration-200">
+                            🎉 <span data-i18n="lbl_yes">JOYFULLY ACCEPT</span>
+                        </button>
+                        <button type="button" onclick="toggleAttendanceUI(false)" id="btn-attend-no" class="border border-black/20 bg-white text-black font-avant text-xs font-bold tracking-widest uppercase py-4 rounded-[32px] transition-all duration-200 hover:bg-[var(--color-burnt-orange)]/10">
+                            💔 <span data-i18n="lbl_no">REGRETFULLY DECLINE</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Guest Name Input -->
+                <div class="space-y-1">
+                    <label for="form-name" class="block font-avant text-xs font-bold uppercase tracking-editorial-wide text-black" data-i18n="lbl_name">YOUR LOVELY NAME *</label>
+                    <input type="text" id="form-name" required placeholder="Jane Doe / 陳大文" class="w-full border border-black/10 p-3.5 rounded-lg font-avant text-sm focus:outline-none focus:border-[var(--color-deep-indigo)] transition-colors">
+                </div>
+
+                <!-- 3. Phone Number Input (Placed directly underneath the Name field) -->
+                <div class="space-y-1">
+                    <label for="form-phone" class="block font-avant text-xs font-bold uppercase tracking-editorial-wide text-black" data-i18n="lbl_phone">PHONE NUMBER / 電話號碼 *</label>
+                    <input type="tel" id="form-phone" required placeholder="+852 9123 4567" class="w-full border border-black/10 p-3.5 rounded-lg font-avant text-sm focus:outline-none focus:border-[var(--color-deep-indigo)] transition-colors">
+                </div>
+
+                <!-- 4. Dynamic Conditional Fields -->
+                <div id="conditional-fields" class="space-y-6 transition-all duration-300 overflow-hidden">
+                    <!-- Relation Selection Dropdown -->
+                    <div class="space-y-1">
+                        <label for="form-relation" class="block font-avant text-xs font-bold uppercase tracking-editorial-wide text-black" data-i18n="lbl_relation">HOW DO YOU KNOW US? *</label>
+                        <select id="form-relation" class="w-full border border-black/10 p-3.5 rounded-lg font-avant text-sm bg-white focus:outline-none focus:border-[var(--color-deep-indigo)]">
+                            <option value="Groom's Side" data-i18n="opt_groom">Groom's Family/Friend (男方親友)</option>
+                            <option value="Bride's Side" data-i18n="opt_bride">Bride's Family/Friend (女方親友)</option>
+                            <option value="Mutual Friends" data-i18n="opt_mutual">Mutual Friends (共同好友)</option>
+                        </select>
+                    </div>
+
+                    <!-- Number of RSVP Seats -->
+                    <div class="space-y-1">
+                        <label for="form-seats" class="block font-avant text-xs font-bold uppercase tracking-editorial-wide text-black" data-i18n="lbl_seats">HOW MANY GUESTS ARE ATTENDING? *</label>
+                        <select id="form-seats" class="w-full border border-black/10 p-3.5 rounded-lg font-avant text-sm bg-white focus:outline-none focus:border-[var(--color-deep-indigo)]">
+                            <option value="1">Just Me (1)</option>
+                            <option value="2">Bringing My Plus One (2)</option>
+                            <option value="3">Small Group (3)</option>
+                            <option value="4">Family (4)</option>
+                        </select>
+                    </div>
+
+                    <!-- Dietary Restrictions -->
+                    <div class="space-y-1">
+                        <label for="form-diet" class="block font-avant text-xs font-bold uppercase tracking-editorial-wide text-black" data-i18n="lbl_diet">ANY DIETARY SPECIAL REQUIREMENTS?</label>
+                        <input type="text" id="form-diet" placeholder="None / Vegetarian / Allergies..." class="w-full border border-black/10 p-3.5 rounded-lg font-avant text-sm focus:outline-none focus:border-[var(--color-deep-indigo)] transition-colors">
+                    </div>
+                </div>
+
+                <!-- 5. Submit -->
+                <button type="submit" id="btn-submit" class="w-full bg-[var(--color-deep-indigo)] text-white font-avant text-sm font-black tracking-editorial-wide py-5 rounded-[32px] border border-black/10 hover:bg-[var(--color-burnt-orange)] transition-all duration-300 shadow-md">
+                    <span data-i18n="btn_submit">SEND RSVP / 提交出席回覆</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-[var(--color-deep-indigo)] border-t border-black/10 text-white relative overflow-hidden">
+        <div class="max-w-[1200px] mx-auto px-6 text-center space-y-6">
+            <h4 class="font-script text-4xl text-[var(--color-honey-gold)]">Thank you for being part of our story</h4>
+            <div class="w-16 h-[1px] bg-[var(--color-sky-blue)] mx-auto opacity-50"></div>
+            <p class="font-avant text-[10px] font-bold tracking-editorial-max text-[var(--color-sky-blue)] uppercase">
+                Designed with love for Charles & Madeline • © 2026
+            </p>
+        </div>
+    </footer>
+
+    <!-- Status feedback Modal -->
+    <div id="status-modal" class="hidden fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-300">
+        <div class="bg-white border border-black/10 p-8 max-w-md w-full mx-4 rounded-xl palais-shadow space-y-6 text-center transform scale-95 transition-transform duration-300" id="modal-card">
+            <div id="modal-icon-container" class="mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-honey-gold)]/20 border border-black/10">
+                <!-- Swapped dynamic vectors -->
+            </div>
+            <div class="space-y-2">
+                <h3 id="modal-title" class="font-sandman text-2xl font-black text-[var(--color-deep-indigo)]"></h3>
+                <p id="modal-desc" class="font-avant text-xs font-semibold text-black/70 leading-relaxed uppercase tracking-wider"></p>
+            </div>
+            <button onclick="closeStatusModal()" id="modal-close-btn" class="w-full bg-[var(--color-deep-indigo)] text-white border border-black/10 font-avant text-xs font-bold tracking-widest uppercase py-3 rounded-full hover:bg-[var(--color-burnt-orange)] transition-all duration-200">
+                Confirm
+            </button>
+        </div>
+    </div>
+
+    <!-- SELLER DEMO CONTROL CENTER -->
+    <div id="seller-controls-panel" class="fixed bottom-4 right-4 z-[99] bg-white border-2 border-neutral-900 shadow-2xl p-4 w-[300px] transition-transform duration-500 translate-y-0" style="display: block;">
+        <div class="flex justify-between items-center mb-3 pb-2 border-b border-neutral-200">
+            <span class="text-[11px] font-black uppercase tracking-[0.15em] text-neutral-800 flex items-center gap-1.5">
+                <i data-lucide="palette" class="w-3.5 h-3.5 text-neutral-700"></i>
+                Design & Color Presets
+            </span>
+            <button onclick="toggleControls()" class="p-1 hover:bg-neutral-100 rounded-sm">
+                <i data-lucide="minimize-2" id="toggle-icon" class="w-3.5 h-3.5 text-neutral-600"></i>
+            </button>
+        </div>
+        
+        <div id="controls-body" class="space-y-4">
+            <!-- Preset Color Options -->
+            <div>
+                <label class="text-[9px] uppercase tracking-widest text-neutral-500 font-bold block mb-1.5">Select Color Preset</label>
+                <div class="grid grid-cols-1 gap-1.5">
+                    <button onclick="changeTheme('classic-indigo')" class="w-full text-left text-[11px] font-semibold border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#234386]"></span>
+                        🔵 Pa'lais Indigo & Orange
+                    </button>
+                    <button onclick="changeTheme('sapphire-toile')" class="w-full text-left text-[11px] font-semibold border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#1e293b]"></span>
+                        💠 Sapphire Toile & Gold
+                    </button>
+                    <button onclick="changeTheme('sage-clay')" class="w-full text-left text-[11px] font-semibold border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#1e3a1e]"></span>
+                        🌿 Mint Sage & Clay Orange
+                    </button>
+                    <button onclick="changeTheme('traditional-red')" class="w-full text-left text-[11px] font-semibold border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#B32421]"></span>
+                        🔴 Traditional Red & Gold
+                    </button>
+                </div>
+            </div>
+
+            <!-- Current Connected Endpoint -->
+            <div>
+                <label class="text-[9px] uppercase tracking-widest text-neutral-500 font-bold block mb-1">Target Webhook Endpoints</label>
+                <input type="text" id="dev-api-url" class="w-full border border-neutral-300 text-[10px] p-2 bg-neutral-50 focus:outline-none focus:border-neutral-900 font-mono" value="https://script.google.com/macros/s/AKfycbxhKANgCFfzBszz3qqUPfHJDECsMj5F3hduwP4AXvpQ91po2qy65wvQ49YSxhyNVU1TaQ/exec">
+                <span class="text-[8px] text-neutral-400 mt-1 block">Your data is linked directly to your active Google Script macro.</span>
+            </div>
+
+            <!-- Database Registration Statistics -->
+            <div class="pt-2.5 border-t border-neutral-200">
+                <span class="text-[9px] uppercase tracking-widest text-neutral-500 font-bold block mb-2">Simulated Statistics Database</span>
+                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                    <div class="bg-neutral-50 p-2 border border-neutral-200">
+                        <span class="text-[10px] text-neutral-500 block uppercase tracking-widest">Expected</span>
+                        <span id="stats-total" class="font-bold font-serif text-neutral-800 text-sm">245 Guests</span>
+                    </div>
+                    <div class="bg-neutral-50 p-2 border border-neutral-200">
+                        <span class="text-[10px] text-neutral-500 block uppercase tracking-widest">Declined</span>
+                        <span id="stats-declined" class="font-bold font-serif text-neutral-800 text-sm">12 Guests</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN LOCALIZATION AND SYSTEM SCRIPTS -->
+    <script>
+        // Form Configuration endpoint directly linked to user sheet script
+        let GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxhKANgCFfzBszz3qqUPfHJDECsMj5F3hduwP4AXvpQ91po2qy65wvQ49YSxhyNVU1TaQ/exec";
+        let currentLang = "zh";
+        let isAttending = true;
+
+        // Elegant Bilingual Hong Kong Style Dictionary mapping
+        const LANG_DATA = {
+            en: {
+                nav_welcome: "WELCOME",
+                nav_countdown: "COUNTDOWN",
+                nav_story: "OUR STORY",
+                nav_details: "THE DETAILS",
+                nav_rsvp: "RSVP",
+                nav_rsvp_btn: "RSVP NOW",
+                badge_save_date: "SAVE THE DATE",
+                lbl_timer_intro: "CHRONOMETER COUNTDOWN",
+                timer_headline: "The Secret Ticking of Hearts",
+                timer_actual_date: "October 24, 2026",
+                timer_days: "DAYS",
+                timer_hours: "HOURS",
+                timer_mins: "MINS",
+                timer_secs: "SECS",
+                btn_save_date: "Save Our Wedding Date",
+                story_cute_label: "Handmade Love Chapter",
+                story_title: "Our Story",
+                story_quote: "「Our journey warmth has been defined entirely by your presence.」",
+                story_para_1: "We met amidst the bustling streets of Hong Kong. From a simple coffee meeting to trekking grand mountains and scanning oceans together, every step of our lives has been brighter side-by-side.",
+                story_para_2: "Today, under the guidance and witnessing eyes of our beloved family and friends, we stamp our commitment onto each other's hearts. We invite you to join our winter banquet.",
+                story_g: "Groom / 新郎",
+                story_b: "Bride / 新娘",
+                details_title: "The Wedding Celebration",
+                details_subtitle: "期待與您共度這個美好的日子",
+                card_timeline_title: "The Schedule",
+                card_venue_title: "The Venue",
+                card_dress_title: "Dress Code",
+                card_venue_desc: "The Emerald Estate, Grand Conservatory & Lawn Garden. • Sunlight Greenhouse and Private Gardens",
+                venue_parking: "🚗 Free valet parking & shuttle service provided",
+                card_dress_desc: "Garden Party Formal. We invite you to dress in elegant pastel colors, comfortable shoes for the grass lawn, and lightweight layers. Sage green, champagne, & warm earth tones are highly welcome!",
+                time_ceremony: "15:30 — Garden Ceremony",
+                time_ceremony_val: "證婚典禮",
+                time_pics: "16:30 — Cocktail Reception",
+                time_pics_val: "雞尾酒會",
+                time_dinner: "18:00 — Evening Banquet",
+                time_dinner_val: "中式晚宴",
+                time_dance: "20:00 — Live Band & Toasting",
+                time_dance_val: "音樂祝酒",
+                rsvp_cute_label: "Kindly Share Your Response",
+                rsvp_headline: "Will You Share Our Joy?",
+                rsvp_deadline_warn: "Please reply by September 15, 2026",
+                lbl_attendance: "WILL YOU JOIN OUR CELEBRATION? *",
+                lbl_yes: "JOYFULLY ACCEPT",
+                lbl_no: "REGRETFULLY DECLINE",
+                lbl_name: "YOUR LOVELY NAME *",
+                lbl_phone: "PHONE NUMBER *",
+                lbl_relation: "HOW DO YOU KNOW US? *",
+                opt_groom: "Groom's Family/Friend (男方親友)",
+                opt_bride: "Bride's Family/Friend (女方親友)",
+                opt_mutual: "Mutual Friends (共同好友)",
+                lbl_seats: "HOW MANY GUESTS ARE ATTENDING? *",
+                lbl_diet: "ANY DIETARY SPECIAL REQUIREMENTS?",
+                btn_submit: "SEND RSVP / 提交出席回覆",
+                form_sending: "RECORDING IN BOOK...",
+                modal_success_title: "RSVP Confirmed",
+                modal_success_desc: "Your thoughtful reply has been logged safely in our wedding guestbook registry!",
+                modal_error_title: "Hiccup Encountered",
+                modal_error_desc: "We had trouble accessing the registration system. Please contact Charles or Madeline directly!",
+                modal_close: "Perfect"
+            },
+            zh: {
+                nav_welcome: "歡迎致詞",
+                nav_countdown: "浪漫倒數",
+                nav_story: "我們的故事",
+                nav_details: "婚禮細節",
+                nav_rsvp: "回覆出席",
+                nav_rsvp_btn: "立刻回覆",
+                badge_save_date: "誠邀出席",
+                lbl_timer_intro: "浪漫倒數計時",
+                timer_headline: "心靈秘境的幸福滴答",
+                timer_actual_date: "二零二六 年 十 月 廿四 日",
+                timer_days: "天",
+                timer_hours: "時",
+                timer_mins: "分",
+                timer_secs: "秒",
+                btn_save_date: "保存我們的婚禮日期",
+                story_cute_label: "誠摯溫馨的故事篇章",
+                story_title: "我們的故事",
+                story_quote: "「從相識到相守，漫長時光因你而溫暖。」",
+                story_para_1: "我們在喧囂的都市中與彼此相遇，從最初一杯咖啡的羞澀問候，到後來一同越過無數高山與海洋。每一次的歡笑與淚水，都有你的陪伴。",
+                story_para_2: "今天，在至親好友的見證之下，我們將在彼此心上蓋上印章。承諾一生相伴，白首不相離。期待與您在這個充滿喜慶的冬日午後共同慶祝。",
+                story_g: "新郎 / Groom",
+                story_b: "新娘 / Bride",
+                details_title: "婚禮慶典安排",
+                details_subtitle: "期待與您共度這個美好的日子",
+                card_timeline_title: "婚禮日程表",
+                card_venue_title: "證婚及晚宴地點",
+                card_dress_title: "著裝建議 Dress Code",
+                card_venue_desc: "翡翠莊園 ‧ 陽光玻璃溫室與戶外花園 (The Emerald Estate, Grand Conservatory)",
+                venue_parking: "🚗 現場備有免費代客泊車及賓客接駁專車服務",
+                card_dress_desc: "優雅花園正裝 (Garden Party Formal)。建議挑選柔和粉嫩色系、適合漫步草坪的舒適鞋款以及保暖外套。鼠尾草綠、香檳金、溫慢大地色等均非常相襯！",
+                time_ceremony: "15:30 — 戶外草地證婚儀式",
+                time_ceremony_val: "證婚儀式",
+                time_pics: "16:30 — 雞尾酒與香檳酒會",
+                time_pics_val: "雞尾酒會",
+                time_dinner: "18:00 — 浪漫玻璃溫室晚宴",
+                time_dinner_val: "中式晚宴",
+                time_dance: "20:00 — 現場音樂演奏與祝酒",
+                time_dance_val: "祝酒致謝",
+                rsvp_cute_label: "誠摯期待您的出席",
+                rsvp_headline: "您是否願意與我們共享喜悅？",
+                rsvp_deadline_warn: "請於 2026 年 9 月 15 日或之前填寫賜覆",
+                lbl_attendance: "您是否能夠出席婚禮慶典？ *",
+                lbl_yes: "欣然出席 / Joyfully Accept",
+                lbl_no: "因事謝絕 / Regretfully Decline",
+                lbl_name: "貴賓大名 / 姓名 *",
+                lbl_phone: "聯絡電話 / 電話 *",
+                lbl_relation: "您是新人的 *",
+                opt_groom: "男方親友 (Groom's Family/Friend)",
+                opt_bride: "女方親友 (Bride's Family/Friend)",
+                opt_mutual: "共同好友 (Mutual Friends)",
+                lbl_seats: "預留人數 (包含您本人) *",
+                lbl_diet: "特別飲食習慣或過敏備註",
+                btn_submit: "送出出席回覆 Submit RSVP",
+                form_sending: "正在儲存回覆...",
+                modal_success_title: "回覆成功 衷心感謝",
+                modal_success_desc: "您的出席回覆已成功送出並安全登記在婚禮賓客名單中，期待當日見到您！",
+                modal_error_title: "哎呀！網絡連線異常",
+                modal_error_desc: "暫時無法安全連線至登記名冊系統，請直接透過電話或微信聯絡新人！",
+                modal_close: "關閉視窗"
+            }
+        };
+
+        // Theme Palette Config Engine
+        const PALETTE_MAP = {
+            'classic-indigo': {
+                'deep-indigo': '#234386',
+                'honey-gold': '#ffc400',
+                'burnt-orange': '#ed7328',
+                'sky-blue': '#6aa8dc',
+                'warm-sand': '#d2b68c',
+                'mint-sage': '#a2d3a6',
+                'cream-paper': '#fbf9f6'
+            },
+            'sapphire-toile': {
+                'deep-indigo': '#1e293b',
+                'honey-gold': '#d97706',
+                'burnt-orange': '#ed7328',
+                'sky-blue': '#38bdf8',
+                'warm-sand': '#cbd5e1',
+                'mint-sage': '#94a3b8',
+                'cream-paper': '#f8fafc'
+            },
+            'sage-clay': {
+                'deep-indigo': '#1e3a1e',
+                'honey-gold': '#f59e0b',
+                'burnt-orange': '#c2410c',
+                'sky-blue': '#86efac',
+                'warm-sand': '#e2e8f0',
+                'mint-sage': '#a7f3d0',
+                'cream-paper': '#f4fbf7'
+            },
+            'traditional-red': {
+                'deep-indigo': '#B32421',
+                'honey-gold': '#D4AF37',
+                'burnt-orange': '#8C4341',
+                'sky-blue': '#fc6a6a',
+                'warm-sand': '#e3ca96',
+                'mint-sage': '#e09494',
+                'cream-paper': '#FCFAF2'
+            }
+        };
+
+        // Function to apply colors dynamically
+        function changeTheme(themeKey) {
+            const colors = PALETTE_MAP[themeKey];
+            if (!colors) return;
+
+            Object.keys(colors).forEach(key => {
+                document.documentElement.style.setProperty(`--color-${key}`, colors[key]);
+            });
+        }
+
+        // Toggle Control Drawer
+        let controlsOpen = true;
+        function toggleControls() {
+            const body = document.getElementById('controls-body');
+            const icon = document.getElementById('toggle-icon');
+            const panel = document.getElementById('seller-controls-panel');
+            
+            if (controlsOpen) {
+                body.style.display = 'none';
+                icon.setAttribute('data-lucide', 'maximize-2');
+                panel.style.transform = 'translateY(calc(100% - 44px))';
+            } else {
+                body.style.display = 'block';
+                icon.setAttribute('data-lucide', 'minimize-2');
+                panel.style.transform = 'translateY(0)';
+            }
+            controlsOpen = !controlsOpen;
+            lucide.createIcons();
+        }
+
+        // Calendar Dropdown Handler
+        function toggleCalendarDropdown() {
+            const menu = document.getElementById("calendar-dropdown");
+            menu.classList.toggle("hidden");
+        }
+
+        function addCalendarAction(type) {
+            const title = "Charles & Madeline's Wedding Celebration";
+            const desc = "We look forward to celebrating our special wedding day with you! Please join us at the Emerald Estate.";
+            const loc = "The Emerald Estate, Grand Conservatory & Lawn Garden";
+            
+            // Oct 24, 2026 - 15:30 to 22:30 UTC
+            const dtStart = "20261024T153000";
+            const dtEnd = "20261024T223000";
+
+            if (type === 'google') {
+                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${dtStart}/${dtEnd}&details=${encodeURIComponent(desc)}&location=${encodeURIComponent(loc)}`;
+                window.open(url, '_blank');
+            } else if (type === 'ical') {
+                const icsContent = [
+                    "BEGIN:VCALENDAR",
+                    "VERSION:2.0",
+                    "PRODID:-//Charles and Madeline Wedding//NONSGML v1.0//EN",
+                    "BEGIN:VEVENT",
+                    `DTSTART:${dtStart}`,
+                    `DTEND:${dtEnd}`,
+                    `SUMMARY:${title}`,
+                    `DESCRIPTION:${desc}`,
+                    `LOCATION:${loc}`,
+                    "END:VEVENT",
+                    "END:VCALENDAR"
+                ].join("\r\n");
+
+                const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "Charles_and_Madeline_Wedding.ics";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            toggleCalendarDropdown();
+        }
+
+        // State & Localisation Trigger Engine
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll("[data-i18n]").forEach(element => {
+                const key = element.getAttribute("data-i18n");
+                if (LANG_DATA[lang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = LANG_DATA[lang][key];
+                    } else {
+                        element.innerHTML = LANG_DATA[lang][key];
+                    }
+                }
+            });
+            // Flip language button indicators
+            document.getElementById("lang-toggle-btn").innerText = lang === "zh" ? "ENGLISH" : "繁體中文";
+            document.documentElement.setAttribute("lang", lang === "zh" ? "zh-Hant" : "en");
+
+            // Update save the date badge typography dynamically
+            const dateBadge = document.getElementById("badge-date-text");
+            if (lang === "zh") {
+                dateBadge.innerText = "誠邀出席";
+            } else {
+                dateBadge.innerText = "SAVE THE DATE";
+            }
+        }
+
+        function toggleLanguage() {
+            setLanguage(currentLang === "zh" ? "en" : "zh");
+        }
+
+        // Attendance Toggle UI State Controller
+        function toggleAttendanceUI(attend) {
+            isAttending = attend;
+            const yesBtn = document.getElementById("btn-attend-yes");
+            const noBtn = document.getElementById("btn-attend-no");
+            const conditionalFields = document.getElementById("conditional-fields");
+
+            if (attend) {
+                yesBtn.className = "border border-black bg-[var(--color-deep-indigo)] text-white font-avant text-xs font-bold tracking-widest uppercase py-4 rounded-[32px] transition-all duration-200";
+                noBtn.className = "border border-black/20 bg-white text-black font-avant text-xs font-bold tracking-widest uppercase py-4 rounded-[32px] transition-all duration-200 hover:bg-[var(--color-burnt-orange)]/10";
+                
+                // Animate conditional elements smoothly with GSAP
+                gsap.to(conditionalFields, {
+                    maxHeight: 500,
+                    opacity: 1,
+                    duration: 0.4,
+                    ease: "power2.out",
+                    overwrite: "auto"
+                });
+            } else {
+                noBtn.className = "border border-black bg-[var(--color-deep-indigo)] text-white font-avant text-xs font-bold tracking-widest uppercase py-4 rounded-[32px] transition-all duration-200";
+                yesBtn.className = "border border-black/20 bg-white text-black font-avant text-xs font-bold tracking-widest uppercase py-4 rounded-[32px] transition-all duration-200 hover:bg-[var(--color-burnt-orange)]/10";
+                
+                // GSAP animation down
+                gsap.to(conditionalFields, {
+                    maxHeight: 0,
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: "power2.inOut",
+                    overwrite: "auto"
+                });
+            }
+        }
+
+        // Custom Elegant Status Modal (Replacing Alerts)
+        function showStatusModal(title, desc, isError = false) {
+            const modal = document.getElementById("status-modal");
+            const card = document.getElementById("modal-card");
+            const titleElem = document.getElementById("modal-title");
+            const descElem = document.getElementById("modal-desc");
+            const iconContainer = document.getElementById("modal-icon-container");
+            const closeBtn = document.getElementById("modal-close-btn");
+
+            titleElem.innerText = title;
+            if (descElem) descElem.innerText = desc;
+            closeBtn.innerText = LANG_DATA[currentLang].modal_close || "Perfect";
+
+            if (isError) {
+                iconContainer.className = "mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-burnt-orange)]/20 border border-black/10 text-[var(--color-burnt-orange)]";
+                iconContainer.innerHTML = '<i data-lucide="frown" class="w-8 h-8"></i>';
+            } else {
+                iconContainer.className = "mx-auto w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-mint-sage)]/30 border border-black/10 text-[var(--color-deep-indigo)]";
+                iconContainer.innerHTML = '<i data-lucide="sparkles" class="w-8 h-8"></i>';
+            }
+
+            lucide.createIcons();
+
+            modal.classList.remove("hidden");
+            gsap.to(modal, { opacity: 1, duration: 0.3, ease: "power2.out" });
+            gsap.fromTo(card, { scale: 0.9, y: 15 }, { scale: 1, y: 0, duration: 0.4, ease: "back.out(1.5)" });
+        }
+
+        function closeStatusModal() {
+            const modal = document.getElementById("status-modal");
+            
+            gsap.to(modal, { opacity: 0, duration: 0.25, onComplete: () => {
+                modal.classList.add("hidden");
+            }});
+        }
+
+        // Dynamic Timer Updater Clock
+        function updateTimelineTicker() {
+            const weddingTimestamp = new Date("October 24, 2026 15:30:00").getTime();
+            const now = new Date().getTime();
+            const distance = weddingTimestamp - now;
+
+            if (distance < 0) {
+                document.getElementById("timer-days").innerText = "00";
+                document.getElementById("timer-hours").innerText = "00";
+                document.getElementById("timer-minutes").innerText = "00";
+                document.getElementById("timer-seconds").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timer-days").innerText = String(days).padStart(2, '0');
+            document.getElementById("timer-hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("timer-minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("timer-seconds").innerText = String(seconds).padStart(2, '0');
+        }
+
+        // Asynchronous Pipeline Submission Route
+        document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById("btn-submit");
+            const originalBtnHtml = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = LANG_DATA[currentLang].form_sending;
+
+            // Aligns strictly with requested sheet column sequence:
+            // 1. Timestamp (時間戳記)
+            // 2. Full Name (姓名) -> fullname
+            // 3. Phone Number (電話) -> phone
+            // 4. Relationship (與新人關係) -> relationship
+            // 5. Attendance Status (出席狀況) -> attendance
+            // 6. Seats Allocated (預留人數) -> seats
+            // 7. Dietary Restrictions (飲食限制) -> diet
+            const payload = {
+                fullname: document.getElementById('form-name').value,
+                phone: document.getElementById('form-phone').value,
+                relationship: isAttending ? document.getElementById('form-relation').value : "N/A",
+                attendance: isAttending ? "accept" : "decline",
+                seats: isAttending ? document.getElementById('form-seats').value : "0",
+                diet: isAttending ? document.getElementById('form-diet').value : "N/A"
+            };
+
+            const endpointUrl = document.getElementById("dev-api-url").value || GOOGLE_SHEET_API_URL;
+
+            try {
+                await fetch(endpointUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+
+                // Update Controls UI mock statistics
+                let expectedNum = parseInt(document.getElementById("stats-total").innerText) || 245;
+                let declinedNum = parseInt(document.getElementById("stats-declined").innerText) || 12;
+                if (isAttending) {
+                    expectedNum += parseInt(payload.seats || 1);
+                    document.getElementById("stats-total").innerText = expectedNum + " Guests";
+                } else {
+                    declinedNum += 1;
+                    document.getElementById("stats-declined").innerText = declinedNum + " Guests";
+                }
+
+                showStatusModal(
+                    LANG_DATA[currentLang].modal_success_title,
+                    LANG_DATA[currentLang].modal_success_desc,
+                    false
+                );
+                document.getElementById('rsvp-form').reset();
+                toggleAttendanceUI(true);
+
+            } catch (error) {
+                console.error("Transmission fault tracking:", error);
+                showStatusModal(
+                    LANG_DATA[currentLang].modal_error_title,
+                    LANG_DATA[currentLang].modal_error_desc,
+                    true
+                );
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+            }
+        });
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById("calendar-dropdown");
+            const dropdownBtn = dropdown.previousElementSibling;
+            if (dropdown && !dropdown.classList.contains("hidden") && !dropdown.contains(e.target) && !dropdownBtn.contains(e.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+
+        // Initialize GSAP Parallax and Motion Orchestrations
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            setLanguage("zh");
+
+            // Execute Clock Timeline Ticker update loop
+            setInterval(updateTimelineTicker, 1000);
+            updateTimelineTicker();
+
+            // Header Background Scroll Controller
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('main-header');
+                const navContainer = document.getElementById('nav-container');
+                if (window.scrollY > 50) {
+                    header.classList.remove('bg-[#fbf9f6]/40');
+                    header.classList.add('bg-[#fbf9f6]/95', 'backdrop-blur-md', 'border-b', 'border-black/5');
+                    navContainer.classList.remove('py-4');
+                    navContainer.classList.add('py-3');
+                } else {
+                    header.classList.add('bg-[#fbf9f6]/40');
+                    header.classList.remove('bg-[#fbf9f6]/95', 'border-b', 'border-black/5');
+                    navContainer.classList.remove('py-3');
+                    navContainer.classList.add('py-4');
+                }
+            });
+
+            // Smooth animations using GSAP & ScrollTrigger
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Intro elements fade-in
+            gsap.from("#welcome h1", {
+                opacity: 0,
+                x: -30,
+                duration: 1.4,
+                ease: "power4.out"
+            });
+
+            // "Our Story" scrapbook fade-in
+            gsap.from(".story-visual-card", {
+                opacity: 0,
+                x: -50,
+                duration: 1.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#story",
+                    start: "top 75%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            gsap.from(".story-text-card", {
+                opacity: 0,
+                x: 50,
+                duration: 1.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#story",
+                    start: "top 75%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // Content card scroll animations
+            gsap.from(".rsvp-card", {
+                opacity: 0,
+                y: 35,
+                stagger: 0.15,
+                duration: 1.1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#details",
+                    start: "top 75%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // Additional GSAP transitions for each section
+            gsap.from("#rsvp-form", {
+                opacity: 0,
+                y: 40,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#rsvp",
+                    start: "top 70%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+    </script>
+</body>
+</html>

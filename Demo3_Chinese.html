@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>陳健朗 & 方葉晴 — 婚禮確認婚期</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Syne"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', '"Cormorant Garamond"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts for Premium Editorial Chinese and English -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+TC:wght@400;600;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- GSAP for Fluid Scroll Trigger Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Smooth Custom Variable Transitions */
+        :root {
+            --brand-lightBg: #FCFAF2;
+            --brand-darkText: #B32421;
+            --brand-muted: #8C4341;
+            --brand-accent: #D4AF37;
+            --brand-border: rgba(179, 36, 33, 0.2);
+        }
+
+        body {
+            background-color: var(--brand-lightBg);
+            color: var(--brand-darkText);
+            transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Dynamic Tailwind Color Overrides using Custom Variables */
+        .text-neutral-900, .text-black, .text-neutral-800, .text-neutral-700 {
+            color: var(--brand-darkText) !important;
+            transition: color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .text-neutral-500, .text-neutral-600, .text-gray-500 {
+            color: var(--brand-muted) !important;
+            transition: color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .border-neutral-200, .border-neutral-300, .border-black\/10 {
+            border-color: var(--brand-border) !important;
+            transition: border-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bg-neutral-50, .bg-neutral-100 {
+            background-color: rgba(0, 0, 0, 0.02) !important;
+            transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Vertical Writing Mode for Chinese Calligraphy Columns */
+        .writing-vertical {
+            writing-mode: vertical-rl;
+            text-combine-upright: digits 2;
+        }
+
+        /* Smooth reveal transitions */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Hide Scrollbar for Editorial aesthetic */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-border);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased overflow-x-hidden">
+
+    <!-- Dynamic Overlay Navigation Bar -->
+    <!-- STREAMING_CHUNK: Setting up navigation and branding -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b border-transparent py-4 md:py-6 px-4 md:px-12 flex justify-between items-center bg-transparent">
+        <div class="flex items-center gap-2">
+            <!-- Double Happiness Logo Badge -->
+            <span class="font-serif text-2xl font-bold tracking-widest text-[var(--brand-darkText)]">囍</span>
+            <span class="hidden md:inline-block font-serif text-xs uppercase tracking-[0.25em] text-[var(--brand-darkText)] font-semibold">陳健朗 &amp; 方葉晴</span>
+        </div>
+
+        <!-- Scroll Nav Links -->
+        <nav class="hidden lg:flex items-center gap-8 text-[11px] font-medium tracking-[0.3em] uppercase">
+            <a href="#welcome" class="hover:opacity-60 transition-opacity" data-i18n="nav_welcome">歡迎致詞</a>
+            <a href="#story" class="hover:opacity-60 transition-opacity" data-i18n="nav_story">我們的故事</a>
+            <a href="#events" class="hover:opacity-60 transition-opacity" data-i18n="nav_schedule">婚禮日程</a>
+            <a href="#gifts" class="hover:opacity-60 transition-opacity" data-i18n="nav_gifts">交通禮金</a>
+        </nav>
+
+        <!-- Right Side Controls (Lang Switcher & Call-to-action) -->
+        <div class="flex items-center gap-4">
+            <!-- Language Picker -->
+            <div class="flex items-center border border-[var(--brand-border)] px-2 py-1 text-[11px] font-bold tracking-widest">
+                <button onclick="setLanguage('en')" id="lang-btn-en" class="px-2 py-0.5 transition-all text-neutral-400">EN</button>
+                <span class="text-neutral-300 mx-1">|</span>
+                <button onclick="setLanguage('zh')" id="lang-btn-zh" class="px-2 py-0.5 transition-all text-[var(--brand-darkText)] font-bold">繁中</button>
+            </div>
+
+            <!-- Header Quick RSVP Button -->
+            <a href="#rsvp" class="hidden md:inline-block border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] text-[10px] uppercase font-bold tracking-[0.25em] px-5 py-2.5 hover:bg-transparent hover:text-[var(--brand-darkText)] transition-all duration-300" data-i18n="nav_rsvp_btn">
+                回覆確認
+            </a>
+            
+            <!-- Mobile Menu Toggle Button -->
+            <button onclick="toggleMobileMenu()" class="lg:hidden p-1 text-[var(--brand-darkText)]">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-[var(--brand-lightBg)] z-[100] translate-x-full transition-transform duration-500 flex flex-col justify-between p-8">
+        <div class="flex justify-between items-center">
+            <span class="font-serif text-3xl font-bold">囍</span>
+            <button onclick="toggleMobileMenu()" class="p-2 text-[var(--brand-darkText)]">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-8 text-lg font-serif text-center my-auto tracking-[0.2em]">
+            <a href="#welcome" onclick="toggleMobileMenu()" class="py-2" data-i18n="nav_welcome">歡迎致詞</a>
+            <a href="#story" onclick="toggleMobileMenu()" class="py-2" data-i18n="nav_story">我們的故事</a>
+            <a href="#events" onclick="toggleMobileMenu()" class="py-2" data-i18n="nav_schedule">婚禮日程</a>
+            <a href="#gifts" onclick="toggleMobileMenu()" class="py-2" data-i18n="nav_gifts">交通禮金</a>
+            <a href="#rsvp" onclick="toggleMobileMenu()" class="inline-block mt-4 border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] uppercase text-sm tracking-[0.2em] py-3 font-semibold" data-i18n="nav_rsvp_btn">
+                回覆確認
+            </a>
+        </nav>
+        <div class="text-center text-xs tracking-widest text-[var(--brand-muted)] opacity-75">
+            © 健朗 & 葉晴. All Rights Reserved.
+        </div>
+    </div>
+
+    <!-- MAIN WELCOME SCROLL SCENE -->
+    <!-- STREAMING_CHUNK: Designing the Welcome layout and Dragon/Phoenix borders -->
+    <section id="welcome" class="relative min-h-screen flex flex-col justify-center items-center pt-24 pb-16 px-4 md:px-12 border-b border-[var(--brand-border)]">
+        
+        <!-- Luxury Left Side Border Decoration (Dragon SVG) -->
+        <div class="hidden xl:block absolute left-4 top-1/2 -translate-y-1/2 w-48 h-auto opacity-20 pointer-events-none select-none text-[var(--brand-darkText)]">
+            <svg viewBox="0 0 100 200" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                <path d="M50,10 C20,30 10,70 30,100 C40,115 60,110 70,120 C85,135 90,170 50,190" />
+                <path d="M40,25 C15,45 25,80 45,95" />
+                <path d="M60,135 C80,150 75,180 55,185" />
+                <circle cx="50" cy="10" r="2" fill="currentColor" />
+                <circle cx="50" cy="190" r="2" fill="currentColor" />
+                <!-- Stylistic Scales and flames -->
+                <path d="M30,50 Q20,60 15,55" />
+                <path d="M35,70 Q25,80 20,75" />
+                <path d="M70,140 Q80,130 85,135" />
+                <path d="M65,160 Q75,150 80,155" />
+            </svg>
+        </div>
+
+        <!-- Luxury Right Side Border Decoration (Phoenix SVG) -->
+        <div class="hidden xl:block absolute right-4 top-1/2 -translate-y-1/2 w-48 h-auto opacity-20 pointer-events-none select-none text-[var(--brand-darkText)]">
+            <svg viewBox="0 0 100 200" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                <path d="M50,10 C80,30 90,70 70,100 C60,115 40,110 30,120 C15,135 10,170 50,190" />
+                <path d="M60,25 C85,45 75,80 55,95" />
+                <path d="M40,135 C20,150 25,180 45,185" />
+                <circle cx="50" cy="10" r="2" fill="currentColor" />
+                <circle cx="50" cy="190" r="2" fill="currentColor" />
+                <!-- Stylistic Feathers and swirls -->
+                <path d="M70,50 Q80,60 85,55" />
+                <path d="M65,70 Q75,80 80,75" />
+                <path d="M30,140 Q20,130 15,135" />
+                <path d="M35,160 Q25,150 20,155" />
+            </svg>
+        </div>
+
+        <!-- Inner Fine Double Line Framing -->
+        <div class="absolute inset-4 md:inset-6 border border-[var(--brand-border)] pointer-events-none"></div>
+        <div class="absolute inset-5 md:inset-7 border border-[var(--brand-border)] opacity-40 pointer-events-none"></div>
+
+        <!-- Dynamic Welcome Scroll Content Grid -->
+        <div class="relative w-full max-w-6xl flex flex-col justify-center items-center gap-10 md:gap-14 z-10">
+            
+            <!-- Traditional Double Happiness Headpiece Emblem -->
+            <div class="text-center">
+                <h1 class="font-serif text-6xl md:text-8xl font-black tracking-widest text-[var(--brand-darkText)] mb-4 select-none drop-shadow-sm">囍</h1>
+                <p class="font-serif text-xs md:text-sm uppercase tracking-[0.45em] text-[var(--brand-muted)] font-medium" data-i18n="welcome_subtitle_upper">THE JOY OF YOUR PRESENCE IS REQUESTED</p>
+                <div class="w-16 h-[1px] bg-[var(--brand-darkText)] mx-auto mt-4 opacity-40"></div>
+            </div>
+
+            <!-- Interwoven Vertical Chinese Names and Circular Plaque Portrait -->
+            <!-- STREAMING_CHUNK: Rendering vertical names and central moon-gate circular silhouette photo -->
+            <div class="relative w-full flex justify-center items-center py-6 md:py-10">
+                
+                <!-- LEFT NAME: 方葉晴 (Bride) in majestic vertical column -->
+                <div class="absolute left-1 md:left-6 lg:left-14 xl:left-24 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                    <span class="font-serif text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-[0.35em] leading-[1.3] text-[var(--brand-darkText)] select-none writing-vertical pl-4 border-r border-dashed border-[var(--brand-border)]">
+                        方葉晴
+                    </span>
+                    <span class="font-serif text-[10px] tracking-[0.2em] text-[var(--brand-muted)] mt-4 uppercase">The Bride</span>
+                </div>
+
+                <!-- CENTRAL MEDALLION: Traditional Moon-Gate circular framing with the paper-cut silhouette illustration -->
+                <div class="relative z-20 flex justify-center items-center">
+                    <!-- Concentric Golden/Crimson Decorative Rings -->
+                    <div class="absolute w-[240px] md:w-[380px] lg:w-[420px] h-[240px] md:h-[380px] lg:h-[420px] rounded-full border-2 border-[var(--brand-darkText)] opacity-80 animate-pulse"></div>
+                    <div class="absolute w-[225px] md:w-[355px] lg:w-[395px] h-[225px] md:h-[355px] lg:h-[395px] rounded-full border border-dashed border-[var(--brand-accent)] opacity-60"></div>
+                    
+                    <!-- Rounded Jade Plaque Image Crop with CSS styling to match paper-cut -->
+                    <div id="hero-cutout-container" class="relative w-[210px] md:w-[330px] lg:w-[370px] h-[210px] md:h-[330px] lg:h-[370px] rounded-full overflow-hidden shadow-2xl bg-white flex justify-center items-center">
+                        <img id="hero-parallax-img" src="https://i.etsystatic.com/18362682/r/il/a578d9/2155898330/il_570xN.2155898330_jtrn.jpg" alt="Traditional Paper-Cut Silhouette Illustration" class="w-full h-full object-cover transform scale-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=600';">
+                        
+                        <!-- Semi-Translucent Traditional Pattern Overlay inside the circle -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-[var(--brand-darkText)]/10 to-transparent mix-blend-color"></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT NAME: 陳健朗 (Groom) in majestic vertical column -->
+                <div class="absolute right-1 md:right-6 lg:right-14 xl:right-24 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                    <span class="font-serif text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-[0.35em] leading-[1.3] text-[var(--brand-darkText)] select-none writing-vertical pr-4 border-l border-dashed border-[var(--brand-border)]">
+                        陳健朗
+                    </span>
+                    <span class="font-serif text-[10px] tracking-[0.2em] text-[var(--brand-muted)] mt-4 uppercase">The Groom</span>
+                </div>
+                
+            </div>
+
+            <!-- Grounding Content: Inviting Paragraph Text & Countdown Details -->
+            <!-- STREAMING_CHUNK: Integrating the Countdown, save-the-date text and responsive panels -->
+            <div class="text-center max-w-xl mx-auto px-4">
+                <p class="font-serif text-lg md:text-2xl italic text-[var(--brand-muted)] leading-relaxed mb-6" data-i18n="welcome_invite_narrative">
+                    共同攜手見證，開啟幸福美滿的全新篇章
+                </p>
+                
+                <!-- Dynamically Localized Date and Venue Row -->
+                <p class="font-serif text-xs uppercase tracking-[0.3em] text-[var(--brand-darkText)] font-semibold mb-8 animate-fade-in" data-i18n="welcome_date_venue">
+                    2026年11月28日  •  敬備喜宴  •  香港金鐘 JW萬豪酒店
+                </p>
+
+                <!-- Active Countdown Elements -->
+                <div class="grid grid-cols-4 gap-2 md:gap-4 max-w-sm mx-auto mb-6">
+                    <div class="border border-[var(--brand-border)] p-3 flex flex-col justify-center items-center">
+                        <span id="countdown-days" class="font-serif text-2xl md:text-3xl font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-[var(--brand-muted)]" data-i18n="countdown_days">天</span>
+                    </div>
+                    <div class="border border-[var(--brand-border)] p-3 flex flex-col justify-center items-center">
+                        <span id="countdown-hours" class="font-serif text-2xl md:text-3xl font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-[var(--brand-muted)]" data-i18n="countdown_hours">時</span>
+                    </div>
+                    <div class="border border-[var(--brand-border)] p-3 flex flex-col justify-center items-center">
+                        <span id="countdown-mins" class="font-serif text-2xl md:text-3xl font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-[var(--brand-muted)]" data-i18n="countdown_mins">分</span>
+                    </div>
+                    <div class="border border-[var(--brand-border)] p-3 flex flex-col justify-center items-center">
+                        <span id="countdown-secs" class="font-serif text-2xl md:text-3xl font-bold">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-[var(--brand-muted)]" data-i18n="countdown_secs">秒</span>
+                    </div>
+                </div>
+
+                <!-- Quick Calendar Add Anchors -->
+                <button onclick="addToCalendar()" class="inline-flex items-center gap-2 border border-[var(--brand-darkText)] text-[11px] uppercase font-bold tracking-[0.25em] px-6 py-3 hover:bg-[var(--brand-darkText)] hover:text-[var(--brand-lightBg)] transition-all duration-300">
+                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                    <span data-i18n="btn_save_date">加入行事曆 Save The Date</span>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 2: OUR STORY / 關於我們 -->
+    <!-- STREAMING_CHUNK: Constructing the asymmetrical bilingual story grid -->
+    <section id="story" class="relative py-24 px-4 md:px-12 lg:px-24 border-b border-[var(--brand-border)]">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Heading -->
+            <div class="text-center md:text-left mb-16">
+                <span class="font-serif text-sm uppercase tracking-[0.3em] text-[var(--brand-muted)] block mb-2" data-i18n="story_subtitle">Our Journey</span>
+                <h2 class="font-serif text-3xl md:text-5xl tracking-tight" data-i18n="story_title">我們的故事</h2>
+                <div class="w-20 h-[1px] bg-[var(--brand-darkText)] mt-4 mx-auto md:mx-0 opacity-40"></div>
+            </div>
+
+            <!-- Multi-photo Asymmetrical Editorial Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Hand Graphic Composition Column -->
+                <div class="lg:col-span-5 relative">
+                    <!-- Chinese Window Lattice Silhouette Element -->
+                    <div class="absolute -top-10 -left-6 w-32 h-32 opacity-10 text-[var(--brand-darkText)] pointer-events-none select-none">
+                        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="5" y="5" width="90" height="90" />
+                            <path d="M50,5 L50,95 M5,50 L95,50" />
+                            <path d="M25,25 L75,25 L75,75 L25,75 Z" />
+                            <path d="M5,25 L25,25 M75,25 L95,25 M5,75 L25,75 M75,75 L95,75" />
+                        </svg>
+                    </div>
+
+                    <div class="relative w-full aspect-[4/5] bg-white border border-[var(--brand-border)] p-4 shadow-xl">
+                        <!-- High Contrast Grayscale Portrait -->
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" alt="The Couple" class="w-full h-full object-cover filter grayscale contrast-125" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800';">
+                        <div class="absolute bottom-6 right-6 bg-[var(--brand-lightBg)] border border-[var(--brand-border)] p-3 text-center">
+                            <span class="font-serif text-xs tracking-widest block uppercase text-[var(--brand-darkText)] font-semibold">SINCE 2019</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hand Narrative Text Column -->
+                <div class="lg:col-span-7 flex flex-col gap-8 justify-center">
+                    <div class="border-l-2 border-[var(--brand-darkText)] pl-6 py-2">
+                        <p class="font-serif text-2xl italic text-[var(--brand-muted)]" data-i18n="story_quote">
+                            「從相識到相守，漫長時光因你而溫暖。」
+                        </p>
+                    </div>
+
+                    <div class="font-serif text-neutral-700 space-y-6 text-sm md:text-base leading-relaxed tracking-wide">
+                        <p data-i18n="story_para_1">
+                            我們在喧囂的都市中與彼此相遇，從最初一杯咖啡的羞澀問候，到後來一同越過無數高山與海洋。每一次的歡笑與淚水，都有你的陪伴。
+                        </p>
+                        <p data-i18n="story_para_2">
+                            今天，在至親好友的見證之下，我們將在彼此心上蓋上印章。承諾一生相伴，白首不相離。期待與您在這個充滿喜慶的冬日午後共同慶祝。
+                        </p>
+                    </div>
+
+                    <!-- Fine Details -->
+                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--brand-border)]">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-widest text-[var(--brand-muted)] block" data-i18n="story_detail_g">Groom / 新郎</span>
+                            <span class="font-serif text-base font-bold text-[var(--brand-darkText)]">陳健朗 Adrian</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase tracking-widest text-[var(--brand-muted)] block" data-i18n="story_detail_b">Bride / 新娘</span>
+                            <span class="font-serif text-base font-bold text-[var(--brand-darkText)]">方葉晴 Chloe</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: SCHEDULE OF EVENTS / 婚禮日程 -->
+    <!-- STREAMING_CHUNK: Crafting the chronological event program list -->
+    <section id="events" class="relative py-24 px-4 md:px-12 lg:px-24 bg-[rgba(0,0,0,0.01)] border-b border-[var(--brand-border)]">
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Heading -->
+            <div class="text-center mb-16">
+                <span class="font-serif text-sm uppercase tracking-[0.3em] text-[var(--brand-muted)] block mb-2" data-i18n="schedule_subtitle">The Program</span>
+                <h2 class="font-serif text-3xl md:text-5xl tracking-tight" data-i18n="schedule_title">婚禮日程</h2>
+                <div class="w-20 h-[1px] bg-[var(--brand-darkText)] mx-auto mt-4 opacity-40"></div>
+            </div>
+
+            <!-- Timeline Entries -->
+            <div class="space-y-8 relative">
+                <!-- Vertical running timeline axis line -->
+                <div class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-[var(--brand-border)] hidden md:block"></div>
+
+                <!-- Event Block 1: Morning Tea Ceremony -->
+                <div class="grid grid-cols-1 md:grid-cols-12 items-center gap-6 relative">
+                    <div class="md:col-span-5 text-center md:text-right">
+                        <span class="font-serif text-3xl md:text-4xl font-bold tracking-tight text-[var(--brand-accent)]">09:30</span>
+                        <span class="text-[9px] uppercase tracking-widest block text-[var(--brand-muted)]" data-i18n="event_1_meridian">Morning AM</span>
+                    </div>
+                    <div class="md:col-span-2 flex justify-center z-10">
+                        <div class="w-8 h-8 rounded-full bg-[var(--brand-lightBg)] border-2 border-[var(--brand-darkText)] flex items-center justify-center font-serif text-xs font-bold text-[var(--brand-darkText)] shadow-sm">
+                            囍
+                        </div>
+                    </div>
+                    <div class="md:col-span-5 text-center md:text-left border border-[var(--brand-border)] md:border-none p-6 md:p-0">
+                        <h3 class="font-serif text-lg font-bold text-[var(--brand-darkText)] uppercase tracking-wider mb-2" data-i18n="event_1_title">傳統敬茶儀式</h3>
+                        <p class="font-serif text-xs text-[var(--brand-muted)] leading-relaxed" data-i18n="event_1_desc">
+                            於新娘家室中，向雙方長輩進行跪拜與奉茶，感恩長輩的養育之恩與無私關懷。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Event Block 2: Guest Arrival -->
+                <div class="grid grid-cols-1 md:grid-cols-12 items-center gap-6 relative">
+                    <div class="md:col-span-5 text-center md:text-right order-1 md:order-3">
+                        <span class="font-serif text-3xl md:text-4xl font-bold tracking-tight text-[var(--brand-accent)]">15:00</span>
+                        <span class="text-[9px] uppercase tracking-widest block text-[var(--brand-muted)]" data-i18n="event_2_meridian">Afternoon PM</span>
+                    </div>
+                    <div class="md:col-span-2 flex justify-center z-10 order-2">
+                        <div class="w-8 h-8 rounded-full bg-[var(--brand-lightBg)] border-2 border-[var(--brand-darkText)] flex items-center justify-center font-serif text-xs font-bold text-[var(--brand-darkText)] shadow-sm">
+                            囍
+                        </div>
+                    </div>
+                    <div class="md:col-span-5 text-center md:text-right border border-[var(--brand-border)] md:border-none p-6 md:p-0 order-3 md:order-1">
+                        <h3 class="font-serif text-lg font-bold text-[var(--brand-darkText)] uppercase tracking-wider mb-2" data-i18n="event_2_title">嘉賓登記入場</h3>
+                        <p class="font-serif text-xs text-[var(--brand-muted)] leading-relaxed" data-i18n="event_2_desc">
+                            金鐘萬豪酒店大宴會廳迎賓。提供精緻茶點與拍照背板，敬邀親友簽到合影。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Event Block 3: Ceremony & Vows -->
+                <div class="grid grid-cols-1 md:grid-cols-12 items-center gap-6 relative">
+                    <div class="md:col-span-5 text-center md:text-right">
+                        <span class="font-serif text-3xl md:text-4xl font-bold tracking-tight text-[var(--brand-accent)]">16:00</span>
+                        <span class="text-[9px] uppercase tracking-widest block text-[var(--brand-muted)]" data-i18n="event_3_meridian">Afternoon PM</span>
+                    </div>
+                    <div class="md:col-span-2 flex justify-center z-10">
+                        <div class="w-8 h-8 rounded-full bg-[var(--brand-lightBg)] border-2 border-[var(--brand-darkText)] flex items-center justify-center font-serif text-xs font-bold text-[var(--brand-darkText)] shadow-sm">
+                            囍
+                        </div>
+                    </div>
+                    <div class="md:col-span-5 text-center md:text-left border border-[var(--brand-border)] md:border-none p-6 md:p-0">
+                        <h3 class="font-serif text-lg font-bold text-[var(--brand-darkText)] uppercase tracking-wider mb-2" data-i18n="event_3_title">神聖證婚儀式</h3>
+                        <p class="font-serif text-xs text-[var(--brand-muted)] leading-relaxed" data-i18n="event_3_desc">
+                            交換誓言與神聖婚戒，在所有來賓與愛人的共同見證之下正式結為終身夫妻。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Event Block 4: Grand Feast Banquet -->
+                <div class="grid grid-cols-1 md:grid-cols-12 items-center gap-6 relative">
+                    <div class="md:col-span-5 text-center md:text-right order-1 md:order-3">
+                        <span class="font-serif text-3xl md:text-4xl font-bold tracking-tight text-[var(--brand-accent)]">18:00</span>
+                        <span class="text-[9px] uppercase tracking-widest block text-[var(--brand-muted)]" data-i18n="event_4_meridian">Evening PM</span>
+                    </div>
+                    <div class="md:col-span-2 flex justify-center z-10 order-2">
+                        <div class="w-8 h-8 rounded-full bg-[var(--brand-lightBg)] border-2 border-[var(--brand-darkText)] flex items-center justify-center font-serif text-xs font-bold text-[var(--brand-darkText)] shadow-sm">
+                            囍
+                        </div>
+                    </div>
+                    <div class="md:col-span-5 text-center md:text-right border border-[var(--brand-border)] md:border-none p-6 md:p-0 order-3 md:order-1">
+                        <h3 class="font-serif text-lg font-bold text-[var(--brand-darkText)] uppercase tracking-wider mb-2" data-i18n="event_4_title">合巹喜宴開席</h3>
+                        <p class="font-serif text-xs text-[var(--brand-muted)] leading-relaxed" data-i18n="event_4_desc">
+                            享用特選精品宴席中式佳餚，欣賞新人成長紀念片段，舉杯共敬，溫馨歡聚。
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: LOCATION & REGISTRY / 交通與禮金 -->
+    <!-- STREAMING_CHUNK: Building transportation details and digital gift coordinates -->
+    <section id="gifts" class="relative py-24 px-4 md:px-12 lg:px-24 border-b border-[var(--brand-border)]">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- Left: Location Details -->
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <span class="font-serif text-sm uppercase tracking-[0.3em] text-[var(--brand-muted)] block mb-2" data-i18n="loc_subtitle">Getting There</span>
+                        <h2 class="font-serif text-3xl md:text-4xl tracking-tight mb-6" data-i18n="loc_title">婚禮場地交通</h2>
+                        <div class="w-16 h-[1px] bg-[var(--brand-darkText)] mb-8 opacity-40"></div>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="font-serif text-base font-bold text-[var(--brand-darkText)] mb-1 uppercase tracking-wider" data-i18n="loc_venue_name">金鐘 JW 萬豪酒店 (JW Marriott Hotel)</h3>
+                                <p class="font-serif text-xs text-[var(--brand-muted)]" data-i18n="loc_venue_addr">香港金鐘道88號太古廣場</p>
+                            </div>
+                            
+                            <!-- Transportation Instructions -->
+                            <div class="space-y-4 pt-4 border-t border-[var(--brand-border)] text-xs font-serif text-neutral-600">
+                                <div class="flex gap-3 items-start">
+                                    <div class="p-1.5 border border-[var(--brand-border)] rounded-sm text-[var(--brand-darkText)]">
+                                        <i data-lucide="train" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-[var(--brand-darkText)] uppercase tracking-wider" data-i18n="loc_mtr_title">港鐵指南 (MTR Guide)</h4>
+                                        <p data-i18n="loc_mtr_desc">金鐘港鐵站 F 出口直接連接太古廣場商場，循商場指示牌即可直達 JW 萬豪酒店電梯大堂。</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 items-start">
+                                    <div class="p-1.5 border border-[var(--brand-border)] rounded-sm text-[var(--brand-darkText)]">
+                                        <i data-lucide="car" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-[var(--brand-darkText)] uppercase tracking-wider" data-i18n="loc_parking_title">自駕與泊車 (Parking Guide)</h4>
+                                        <p data-i18n="loc_parking_desc">酒店提供付費代客泊車服務，亦可選擇泊車於太古廣場停車場，消費滿額可享免收泊車優惠。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Embedded Interactive Minimal Map Placeholder with Navigation Button -->
+                    <div class="mt-8 border border-[var(--brand-border)] p-4 bg-[rgba(0,0,0,0.01)] flex flex-col md:flex-row items-center gap-4 justify-between">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="map-pin" class="w-8 h-8 text-[var(--brand-darkText)] opacity-80"></i>
+                            <div>
+                                <span class="font-serif text-[11px] uppercase tracking-widest text-[var(--brand-muted)] block">Google Map Coordinates</span>
+                                <span class="font-serif text-sm font-bold text-[var(--brand-darkText)]">22.2782° N, 114.1654° E</span>
+                            </div>
+                        </div>
+                        <a href="https://maps.google.com/?q=JW+Marriott+Hotel+Hong+Kong" target="_blank" class="w-full md:w-auto text-center border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] text-[10px] font-bold tracking-[0.25em] px-5 py-3 uppercase hover:bg-transparent hover:text-[var(--brand-darkText)] transition-all duration-300">
+                            導航地圖 Open Map
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Gift Registry & Digital Envelope details -->
+                <div class="border border-[var(--brand-border)] p-8 md:p-12 flex flex-col justify-between relative bg-white">
+                    <!-- Subtle Corner Ornamental Grid Lines -->
+                    <div class="absolute top-2 left-2 w-6 h-6 border-t border-l border-[var(--brand-border)] opacity-60"></div>
+                    <div class="absolute top-2 right-2 w-6 h-6 border-t border-r border-[var(--brand-border)] opacity-60"></div>
+                    <div class="absolute bottom-2 left-2 w-6 h-6 border-b border-l border-[var(--brand-border)] opacity-60"></div>
+                    <div class="absolute bottom-2 right-2 w-6 h-6 border-b border-r border-[var(--brand-border)] opacity-60"></div>
+
+                    <div>
+                        <span class="font-serif text-sm uppercase tracking-[0.3em] text-[var(--brand-muted)] block mb-2" data-i18n="gift_subtitle">Tradition & Gifts</span>
+                        <h2 class="font-serif text-3xl tracking-tight mb-6" data-i18n="gift_title">婚禮禮金賀儀</h2>
+                        <div class="w-16 h-[1px] bg-[var(--brand-darkText)] mb-8 opacity-40"></div>
+
+                        <p class="font-serif text-xs md:text-sm text-neutral-600 leading-relaxed mb-8" data-i18n="gift_desc">
+                            您的出席與誠摯祝福即是給予我們最好的新婚賀禮。若您希望奉上賀儀，我們備有便捷的電子支付管道（FPS / PayMe）以及傳統禮金箱，感謝您的每一份心意與祝福。
+                        </p>
+
+                        <!-- Digital Payment Methods -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[var(--brand-border)]">
+                            <div class="p-4 border border-[var(--brand-border)] flex flex-col items-center justify-center text-center bg-[rgba(0,0,0,0.01)]">
+                                <span class="font-serif text-xs font-bold text-[var(--brand-darkText)] uppercase tracking-wider mb-2">FPS 轉數快</span>
+                                <span class="font-serif text-base font-bold text-[var(--brand-accent)] tracking-wider">123-456789-01</span>
+                                <span class="text-[9px] text-[var(--brand-muted)] mt-1">Groom Account: CHAN K. L.</span>
+                            </div>
+                            <div class="p-4 border border-[var(--brand-border)] flex flex-col items-center justify-center text-center bg-[rgba(0,0,0,0.01)]">
+                                <span class="font-serif text-xs font-bold text-[var(--brand-darkText)] uppercase tracking-wider mb-2">PayMe HK</span>
+                                <span class="font-serif text-xs border border-dashed border-[var(--brand-border)] px-3 py-1.5 inline-block text-[var(--brand-darkText)]">Scan QR At Reception</span>
+                                <span class="text-[9px] text-[var(--brand-muted)] mt-2">Mobile Terminal Access</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center text-[10px] tracking-widest text-[var(--brand-muted)] uppercase opacity-75">
+                        &bull; 敬謝賀儀 &bull;
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: RSVP FORM / 回覆確認 -->
+    <!-- STREAMING_CHUNK: Implementing the responsive bilingual RSVP questionnaire and form validation rules -->
+    <section id="rsvp" class="relative py-24 px-4 md:px-12 lg:px-24 bg-[rgba(0,0,0,0.01)] border-b border-[var(--brand-border)]">
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Heading -->
+            <div class="text-center mb-16">
+                <span class="font-serif text-sm uppercase tracking-[0.3em] text-[var(--brand-muted)] block mb-2" data-i18n="rsvp_subtitle">Kindly Respond</span>
+                <h2 data-i18n="rsvp_title" class="font-serif text-3xl md:text-5xl tracking-tight text-neutral-900 uppercase">RSVP Confirmation</h2>
+                <div class="w-20 h-[1px] bg-[var(--brand-darkText)] mx-auto mt-4 opacity-40"></div>
+            </div>
+
+            <!-- RSVP Form Container -->
+            <form id="rsvp-form" class="space-y-8 bg-white border border-[var(--brand-border)] p-8 md:p-12 relative shadow-xl">
+                <!-- Double lines decoration inside form -->
+                <div class="absolute inset-2 border border-[var(--brand-border)] opacity-25 pointer-events-none"></div>
+
+                <!-- Live Linked Indicator -->
+                <div class="flex justify-end mb-4 relative z-10">
+                    <span id="sheet-status-badge" class="inline-flex items-center gap-1.5 px-3 py-1 text-[9px] uppercase font-bold tracking-widest border border-emerald-200 bg-emerald-50 text-emerald-700">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span data-i18n="status_connected">🟢 Live Google Sheet Linked Successfully</span>
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                    <!-- Guest Name Field -->
+                    <div class="flex flex-col">
+                        <label for="form-name" class="font-serif text-xs uppercase tracking-widest text-[var(--brand-muted)] mb-2 font-bold" data-i18n="form_label_name">賓客姓名 / Guest Name *</label>
+                        <input type="text" id="form-name" required class="bg-transparent border-b border-[var(--brand-border)] py-3 text-sm focus:outline-none focus:border-[var(--brand-darkText)] font-serif text-[var(--brand-darkText)] transition-colors placeholder-[var(--brand-muted)]/40" placeholder="e.g. 陳大文 / Albert Chan">
+                    </div>
+
+                    <!-- Relationship Picker -->
+                    <div class="flex flex-col">
+                        <label for="form-relation" class="font-serif text-xs uppercase tracking-widest text-[var(--brand-muted)] mb-2 font-bold" data-i18n="form_label_relation">關係分類 / Relationship *</label>
+                        <select id="form-relation" required class="bg-transparent border-b border-[var(--brand-border)] py-3 text-sm focus:outline-none focus:border-[var(--brand-darkText)] font-serif text-[var(--brand-darkText)] transition-colors">
+                            <option value="groom_family" data-i18n="relation_groom_f">男方親友 (Groom's Guest)</option>
+                            <option value="groom_friend" data-i18n="relation_groom_fr">男方朋友 (Groom's Friend)</option>
+                            <option value="bride_family" data-i18n="relation_bride_f">女方親友 (Bride's Guest)</option>
+                            <option value="bride_friend" data-i18n="relation_bride_fr">女方朋友 (Bride's Friend)</option>
+                        </select>
+                    </div>
+
+                    <!-- Attendance Toggles -->
+                    <div class="flex flex-col md:col-span-2">
+                        <label class="font-serif text-xs uppercase tracking-widest text-[var(--brand-muted)] mb-4 font-bold" data-i18n="form_label_attendance">出席回覆 / Attendance *</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button type="button" onclick="toggleAttendanceUI(true)" id="attendance-yes" class="border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] text-xs uppercase font-bold tracking-widest py-4 transition-all duration-300">
+                                <span data-i18n="attendance_yes">出席 (Will Attend)</span>
+                            </button>
+                            <button type="button" onclick="toggleAttendanceUI(false)" id="attendance-no" class="border border-[var(--brand-border)] text-[var(--brand-darkText)] text-xs uppercase font-bold tracking-widest py-4 transition-all duration-300 hover:bg-[var(--brand-border)]/10">
+                                <span data-i18n="attendance_no">婉拒 (Cannot Attend)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Conditional Inputs wrapper -->
+                    <div id="rsvp-conditional-fields" class="grid grid-cols-1 md:grid-cols-2 gap-8 md:col-span-2 transition-all duration-500 overflow-hidden max-h-[500px]">
+                        <!-- Seat count -->
+                        <div class="flex flex-col">
+                            <label for="form-seats" class="font-serif text-xs uppercase tracking-widest text-[var(--brand-muted)] mb-2 font-bold" data-i18n="form_label_seats">出席人數 / Guests Count *</label>
+                            <select id="form-seats" class="bg-transparent border-b border-[var(--brand-border)] py-3 text-sm focus:outline-none focus:border-[var(--brand-darkText)] font-serif text-[var(--brand-darkText)] transition-colors">
+                                <option value="1">1 Person</option>
+                                <option value="2">2 Persons</option>
+                                <option value="3">3 Persons</option>
+                                <option value="4">4 Persons</option>
+                                <option value="5">5 Persons</option>
+                            </select>
+                        </div>
+
+                        <!-- Diet requirements -->
+                        <div class="flex flex-col">
+                            <label for="form-diet" class="font-serif text-xs uppercase tracking-widest text-[var(--brand-muted)] mb-2 font-bold" data-i18n="form_label_diet">膳食需求 / Dietary Notes</label>
+                            <input type="text" id="form-diet" class="bg-transparent border-b border-[var(--brand-border)] py-3 text-sm focus:outline-none focus:border-[var(--brand-darkText)] font-serif text-[var(--brand-darkText)] transition-colors placeholder-[var(--brand-muted)]/40" placeholder="e.g. 茹素 / None" data-i18n-placeholder="form_placeholder_diet">
+                        </div>
+                    </div>
+
+                    <!-- Custom Message Textbox -->
+                    <div class="flex flex-col md:col-span-2">
+                        <label for="form-message" class="font-serif text-xs uppercase tracking-widest text-[var(--brand-muted)] mb-2 font-bold" data-i18n="form_label_msg">給新人的祝賀詞 / Blessings & Message</label>
+                        <textarea id="form-message" rows="3" class="bg-transparent border-b border-[var(--brand-border)] py-3 text-sm focus:outline-none focus:border-[var(--brand-darkText)] font-serif text-[var(--brand-darkText)] transition-colors placeholder-[var(--brand-muted)]/40" placeholder="e.g. 白頭到老，百年好合！" data-i18n-placeholder="form_placeholder_msg"></textarea>
+                    </div>
+                </div>
+
+                <!-- Form Submit Action Bar -->
+                <div class="relative z-10 pt-6 border-t border-[var(--brand-border)] text-center">
+                    <button type="submit" id="form-submit-btn" class="w-full border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] text-xs uppercase font-bold tracking-[0.3em] py-4 hover:bg-transparent hover:text-[var(--brand-darkText)] transition-all duration-300">
+                        <span data-i18n="btn_submit">送出確認提交 Submit RSVP</span>
+                    </button>
+                    
+                    <p id="rsvp-loading-spinner" class="hidden text-xs text-[var(--brand-muted)] mt-4 tracking-widest uppercase animate-pulse">
+                        <span data-i18n="form_sending">正在連接資料庫中，請稍候...</span>
+                    </p>
+                </div>
+            </form>
+
+            <!-- Custom Elegant Message Notification Modal Box instead of Alerts -->
+            <div id="status-modal" class="hidden fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+                <div class="bg-[var(--brand-lightBg)] border-2 border-[var(--brand-darkText)] p-8 max-w-sm w-full relative text-center shadow-2xl">
+                    <div class="absolute inset-2 border border-[var(--brand-border)] pointer-events-none"></div>
+                    <span class="font-serif text-5xl font-bold tracking-widest text-[var(--brand-accent)] mb-4 block">囍</span>
+                    <h4 id="status-modal-title" class="font-serif text-xl font-bold mb-2 text-[var(--brand-darkText)]"></h4>
+                    <p id="status-modal-desc" class="font-serif text-xs text-[var(--brand-muted)] mb-6 leading-relaxed"></p>
+                    <button onclick="closeStatusModal()" class="border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] text-[10px] uppercase font-bold tracking-[0.25em] px-6 py-2.5 hover:bg-transparent hover:text-[var(--brand-darkText)] transition-all duration-300">
+                        關閉視窗 Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative py-16 px-4 md:px-12 border-t border-[var(--brand-border)] text-center">
+        <span class="font-serif text-5xl font-bold text-[var(--brand-darkText)] select-none">囍</span>
+        <p class="font-serif text-sm tracking-widest text-[var(--brand-darkText)] font-bold mt-4">陳健朗 &amp; 方葉晴</p>
+        <p class="text-[9px] uppercase tracking-[0.25em] text-[var(--brand-muted)] mt-2">© 2026 Traditional Heritage Wedding Archive. Design Crafted Locally in HK.</p>
+    </footer>
+
+    <!-- SELLER DEMO CONTROL CENTER -->
+    <!-- STREAMING_CHUNK: Setting up the developer demonstration sidepanel and theme parameters -->
+    <div id="seller-controls-panel" class="fixed bottom-4 right-4 z-[999] bg-white border-2 border-neutral-900 shadow-2xl p-4 w-[300px] transition-transform duration-500 translate-y-0" style="display: block;">
+        <div class="flex justify-between items-center mb-3 pb-2 border-b border-neutral-200">
+            <span class="text-[11px] font-black uppercase tracking-[0.15em] text-neutral-800 flex items-center gap-1.5">
+                <i data-lucide="palette" class="w-3.5 h-3.5 text-neutral-700"></i>
+                Chinese Wedding controls
+            </span>
+            <button onclick="toggleControls()" class="p-1 hover:bg-neutral-100 rounded-sm">
+                <i data-lucide="minimize-2" id="toggle-icon" class="w-3.5 h-3.5 text-neutral-600"></i>
+            </button>
+        </div>
+        
+        <div id="controls-body" class="space-y-4">
+            <!-- Dynamic Theme Preset Buttons -->
+            <div>
+                <label class="text-[9px] uppercase tracking-widest text-neutral-500 font-bold block mb-1.5">Select Color Preset</label>
+                <div class="grid grid-cols-1 gap-1.5">
+                    <button onclick="changeTheme('vermilion')" class="w-full text-left text-[11px] font-semibold border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#B32421]"></span>
+                        🔴 囍 硃砂紅 (Vermilion)
+                    </button>
+                    <button onclick="changeTheme('jade')" class="w-full text-left text-[11px] font-semibold border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#1A4335]"></span>
+                        🟢 翠 碧玉綠 (Royal Jade)
+                    </button>
+                    <button onclick="changeTheme('gold')" class="w-full text-left text-[11px] font-semibold border border-neutral-200 px-3 py-1.5 hover:bg-neutral-50 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#A37E36]"></span>
+                        🟡 金 琉璃金 (Imperial Gold)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Target Spreadsheet API Configuration -->
+            <div>
+                <label class="text-[9px] uppercase tracking-widest text-neutral-500 font-bold block mb-1">Target Google Sheet API URL</label>
+                <input type="text" id="dev-api-url" class="w-full border border-neutral-300 text-[10px] p-2 bg-neutral-50 focus:outline-none focus:border-neutral-900 font-mono" value="https://script.google.com/macros/s/AKfycbxhKANgCFfzBszz3qqUPfHJDECsMj5F3hduwP4AXvpQ91po2qy65wvQ49YSxhyNVU1TaQ/exec">
+                <span class="text-[8px] text-neutral-400 mt-1 block">RSVPs stream dynamically to your named "RSVPs" spreadsheet tab on click.</span>
+            </div>
+
+            <!-- Database Statistics Summary Display -->
+            <div class="pt-2.5 border-t border-neutral-200">
+                <span class="text-[9px] uppercase tracking-widest text-neutral-500 font-bold block mb-2">Simulated Statistics Database</span>
+                <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                    <div class="bg-neutral-50 p-2 border border-neutral-200">
+                        <span class="text-[10px] text-neutral-500 block uppercase tracking-widest">Expected</span>
+                        <span id="stats-total" class="font-bold font-serif text-neutral-800 text-sm">245 Guests</span>
+                    </div>
+                    <div class="bg-neutral-50 p-2 border border-neutral-200">
+                        <span class="text-[10px] text-neutral-500 block uppercase tracking-widest">Declined</span>
+                        <span id="stats-declined" class="font-bold font-serif text-neutral-800 text-sm">12 Guests</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN LOCALIZATION AND ANIMATION SCRIPTS -->
+    <!-- STREAMING_CHUNK: Initializing dynamic translation libraries and GSAP parallax scrolling blocks -->
+    <script>
+        // Target Google Sheet Endpoint 
+        let GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxhKANgCFfzBszz3qqUPfHJDECsMj5F3hduwP4AXvpQ91po2qy65wvQ49YSxhyNVU1TaQ/exec";
+
+        // Dynamic Localization Dictionary File
+        const LANG_DATA = {
+            en: {
+                nav_welcome: "Welcome",
+                nav_story: "Our Story",
+                nav_schedule: "Schedule",
+                nav_gifts: "Gifts & Travel",
+                nav_rsvp_btn: "RSVP",
+                welcome_subtitle_upper: "THE JOY OF YOUR PRESENCE IS REQUESTED",
+                welcome_invite_narrative: "Join us in witnessing the beginning of our brand-new life together",
+                welcome_date_venue: "NOVEMBER 28, 2026  •  WEDDING BANQUET  •  JW MARRIOTT HOTEL HONG KONG",
+                countdown_days: "Days",
+                countdown_hours: "Hours",
+                countdown_mins: "Mins",
+                countdown_secs: "Secs",
+                btn_save_date: "Save The Date",
+                story_subtitle: "Our Journey",
+                story_title: "Our Story",
+                story_quote: "「Our journey warmth has been defined entirely by your presence.」",
+                story_para_1: "We met amidst the bustling streets of Hong Kong. From a simple coffee meeting to trekking grand mountains and scanning oceans together, every step of our lives has been brighter side-by-side.",
+                story_para_2: "Today, under the guidance and witnessing eyes of our beloved family and friends, we stamp our commitment onto each other's hearts. We invite you to join our winter banquet.",
+                story_detail_g: "The Groom",
+                story_detail_b: "The Bride",
+                schedule_subtitle: "The Program",
+                schedule_title: "Wedding Schedule",
+                event_1_meridian: "Morning AM",
+                event_1_title: "Traditional Tea Ceremony",
+                event_1_desc: "Serving family elders tea to express our deep gratitude and filial reverence.",
+                event_2_meridian: "Afternoon PM",
+                event_2_title: "Guest Arrival & Registration",
+                event_2_desc: "The Grand Ballroom of JW Marriott Hotel Hong Kong opens. Join us for light refreshments and photo sessions.",
+                event_3_meridian: "Afternoon PM",
+                event_3_title: "Wedding Vows & Ceremony",
+                event_3_desc: "Exchanging rings and signing certificates under the witnessing eyes of all our guests.",
+                event_4_meridian: "Evening PM",
+                event_4_title: "合巹 Celebration Feast",
+                event_4_desc: "Indulging in a bespoke Chinese multi-course culinary experience and sharing memories.",
+                loc_subtitle: "Getting There",
+                loc_title: "Location Coordinates",
+                loc_venue_name: "JW Marriott Hotel Hong Kong",
+                loc_venue_addr: "Pacific Place, 88 Queensway, Admiralty, Hong Kong",
+                loc_mtr_title: "By MTR Railway",
+                loc_mtr_desc: "Admiralty MTR Station Exit F is directly connected to Pacific Place. Follow hotel signs inside the mall.",
+                loc_parking_title: "By Car & Parking",
+                loc_parking_desc: "Valet parking is accessible at hotel reception. Alternatively, mall parking is free for qualified receipts.",
+                gift_subtitle: "Tradition & Gifts",
+                gift_title: "Registry & Envelope Cards",
+                gift_desc: "Your presence is our ultimate wedding gift. If you wish to gift us blessings, we support FPS, PayMe, and physical card boxes.",
+                rsvp_subtitle: "Kindly Respond",
+                rsvp_title: "RSVP Confirmation",
+                status_connected: "🟢 Live Google Sheet Linked Successfully",
+                form_label_name: "Guest Name *",
+                form_label_relation: "Relationship *",
+                relation_groom_f: "Groom's Guest / Family",
+                relation_groom_fr: "Groom's Friend",
+                relation_bride_f: "Bride's Guest / Family",
+                relation_bride_fr: "Bride's Friend",
+                form_label_attendance: "Attendance *",
+                attendance_yes: "Will Attend",
+                attendance_no: "Declined",
+                form_label_seats: "Guests Count *",
+                form_label_diet: "Dietary Notes",
+                form_placeholder_diet: "e.g. Vegetarian / Halal / None",
+                form_label_msg: "Blessings & Message",
+                form_placeholder_msg: "e.g. Warmest wishes to a beautiful couple!",
+                btn_submit: "Submit RSVP",
+                form_sending: "Submitting to database, please wait...",
+                submit_success_title_yes: "Response Recorded!",
+                submit_success_desc_yes: "Thank you! We have successfully updated our Google Sheets database. We look forward to celebrating with you on November 28th!",
+                submit_success_title_no: "Thank You for Responding",
+                submit_success_desc_no: "Although you are unable to attend, we truly appreciate your warm wishes and thoughts!",
+                submit_fail_title: "Submission Error",
+                submit_fail_desc: "Could not write to the spreadsheet. Please double check your internet connection or try again."
+            },
+            zh: {
+                nav_welcome: "歡迎致詞",
+                nav_story: "我們的故事",
+                nav_schedule: "婚禮日程",
+                nav_gifts: "交通禮金",
+                nav_rsvp_btn: "回覆確認",
+                welcome_subtitle_upper: "THE JOY OF YOUR PRESENCE IS REQUESTED",
+                welcome_invite_narrative: "共同攜手見證，開啟幸福美滿的全新篇章",
+                welcome_date_venue: "2026年11月28日  •  敬備喜宴  •  香港金鐘 JW萬豪酒店",
+                countdown_days: "天",
+                countdown_hours: "時",
+                countdown_mins: "分",
+                countdown_secs: "秒",
+                btn_save_date: "加入行事曆 Save The Date",
+                story_subtitle: "Our Journey",
+                story_title: "我們的故事",
+                story_quote: "「從相識到相守，漫長時光因你而溫暖。」",
+                story_para_1: "我們在喧囂的都市中與彼此相遇，從最初一杯咖啡的羞澀問候，到後來一同越過無數高山與海洋。每一次的歡笑與淚水，都有你的陪伴。",
+                story_para_2: "今天，在至親好友的見證之下，我們將在彼此心上蓋上印章。承諾一生相伴，白首不相離。期待與您在這個充滿喜慶的冬日午後共同慶祝。",
+                story_detail_g: "新郎 / Groom",
+                story_detail_b: "新娘 / Bride",
+                schedule_subtitle: "The Program",
+                schedule_title: "婚禮日程",
+                event_1_meridian: "上午 AM",
+                event_1_title: "傳統敬茶儀式",
+                event_1_desc: "於新娘家室中，向雙方長輩進行跪拜與奉茶，感恩長輩的養育之恩與無私關懷。",
+                event_2_meridian: "下午 PM",
+                event_2_title: "嘉賓登記入場",
+                event_2_desc: "金鐘萬豪酒店大宴會廳迎賓。提供精緻茶點與拍照背板，敬邀親友簽到合影。",
+                event_3_meridian: "下午 PM",
+                event_3_title: "神聖證婚儀式",
+                event_3_desc: "交換誓言與神聖婚戒，在所有來賓與愛人的共同見證之下正式結為終身夫妻。",
+                event_4_meridian: "晚上 PM",
+                event_4_title: "合巹喜宴開席",
+                event_4_desc: "享用特選精品宴席中式佳餚，欣賞新人成長紀念片段，舉杯共敬，溫馨歡聚。",
+                loc_subtitle: "Getting There",
+                loc_title: "婚禮場地交通",
+                loc_venue_name: "金鐘 JW 萬豪酒店 (JW Marriott Hotel)",
+                loc_venue_addr: "香港金鐘道88號太古廣場",
+                loc_mtr_title: "港鐵指南 (MTR Guide)",
+                loc_mtr_desc: "金鐘港鐵站 F 出口直接連接太古廣場商場，循商場指示牌即可直達 JW 萬豪酒店電梯大堂。",
+                loc_parking_title: "自駕與泊車 (Parking Guide)",
+                loc_parking_desc: "酒店提供付費代客泊車服務，亦可選擇泊車於太古廣場停車場，消費滿額可享免收泊車優惠。",
+                gift_subtitle: "Tradition & Gifts",
+                gift_title: "婚禮禮金賀儀",
+                gift_desc: "您的出席與誠摯祝福即是給予我們最好的新婚賀禮。若您希望奉上賀儀，我們備有便捷的電子支付管道（FPS / PayMe）以及傳統禮金箱。",
+                rsvp_subtitle: "Kindly Respond",
+                rsvp_title: "回覆確認",
+                status_connected: "🟢 Google 試算表即時連線中",
+                form_label_name: "賓客姓名 / Guest Name *",
+                form_label_relation: "關係分類 / Relationship *",
+                relation_groom_f: "男方親友 (Groom's Guest)",
+                relation_groom_fr: "男方朋友 (Groom's Friend)",
+                relation_bride_f: "女方親友 (Bride's Guest)",
+                relation_bride_fr: "女方朋友 (Bride's Friend)",
+                form_label_attendance: "出席回覆 / Attendance *",
+                attendance_yes: "出席 (Will Attend)",
+                attendance_no: "婉拒 (Cannot Attend)",
+                form_label_seats: "出席人數 / Guests Count *",
+                form_label_diet: "膳食需求 / Dietary Notes",
+                form_placeholder_diet: "例如：茹素 / 蠶豆症 / 無特別要求",
+                form_label_msg: "給新人的祝賀詞 / Blessings & Message",
+                form_placeholder_msg: "例如：白頭到老，百年好合！",
+                btn_submit: "送出確認提交 Submit RSVP",
+                form_sending: "正在連接資料庫中，請稍候...",
+                submit_success_title_yes: "回覆成功，感謝您！",
+                submit_success_desc_yes: "我們已成功更新後台 Google 試算表。非常期待在 11 月 28 日與您見面同慶！",
+                submit_success_title_no: "感謝您的寶貴時間",
+                submit_success_desc_no: "雖然您不克出席，但您的暖心問候我們已深深收下，衷心感謝！",
+                submit_fail_title: "提交失敗",
+                submit_fail_desc: "暫時無法將您的 RSVP 寫入後台資料庫，請檢查您的網路狀態並重新提交。"
+            }
+        };
+
+        let currentLang = "zh";
+        let isAttending = true;
+
+        // Dynamic Theme Palette Map Configuration
+        // STREAMING_CHUNK: Setting up Theme palette profiles
+        const PALETTE_MAP = {
+            vermilion: {
+                lightBg: "#FCFAF2",
+                darkText: "#B32421",
+                muted: "#8C4341",
+                accent: "#D4AF37",
+                border: "rgba(179, 36, 33, 0.2)"
+            },
+            jade: {
+                lightBg: "#F3F6F4",
+                darkText: "#1A4335",
+                muted: "#5C7469",
+                accent: "#D4AF37",
+                border: "rgba(26, 67, 53, 0.2)"
+            },
+            gold: {
+                lightBg: "#F7F2E8",
+                darkText: "#A37E36",
+                muted: "#6E5526",
+                accent: "#B32421",
+                border: "rgba(163, 126, 54, 0.2)"
+            }
+        };
+
+        // Theme Switcher Function
+        function changeTheme(themeName) {
+            const colors = PALETTE_MAP[themeName];
+            if (!colors) return;
+
+            // Set variables dynamically in document root styles
+            document.documentElement.style.setProperty('--brand-lightBg', colors.lightBg);
+            document.documentElement.style.setProperty('--brand-darkText', colors.darkText);
+            document.documentElement.style.setProperty('--brand-muted', colors.muted);
+            document.documentElement.style.setProperty('--brand-accent', colors.accent);
+            document.documentElement.style.setProperty('--brand-border', colors.border);
+
+            // Dynamically refresh graphics colors
+            document.body.style.backgroundColor = colors.lightBg;
+            document.body.style.color = colors.darkText;
+
+            // Adjust header scroll states safely
+            handleScrollEffect();
+        }
+
+        // Language Switcher Function
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Highlight Buttons in Language selection bar
+            const btnEn = document.getElementById('lang-btn-en');
+            const btnZh = document.getElementById('lang-btn-zh');
+            
+            if (lang === 'en') {
+                btnEn.classList.add('text-[var(--brand-darkText)]', 'font-bold');
+                btnEn.classList.remove('text-neutral-400');
+                btnZh.classList.add('text-neutral-400');
+                btnZh.classList.remove('text-[var(--brand-darkText)]', 'font-bold');
+            } else {
+                btnZh.classList.add('text-[var(--brand-darkText)]', 'font-bold');
+                btnZh.classList.remove('text-neutral-400');
+                btnEn.classList.add('text-neutral-400');
+                btnEn.classList.remove('text-[var(--brand-darkText)]', 'font-bold');
+            }
+
+            // Perform dynamic data attributes translate
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (LANG_DATA[lang][key]) {
+                    el.innerText = LANG_DATA[lang][key];
+                }
+            });
+
+            // Handle Input Placeholder localize
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (LANG_DATA[lang][key]) {
+                    el.placeholder = LANG_DATA[lang][key];
+                }
+            });
+
+            // Recalculate Scroll Parameter Bounds for GSAP Smoothness
+            ScrollTrigger.refresh();
+        }
+
+        // Timer Calculations
+        function updateCountdown() {
+            const weddingDate = new Date("November 28, 2026 16:00:00").getTime();
+            const now = new Date().getTime();
+            const difference = weddingDate - now;
+
+            if (difference < 0) {
+                document.getElementById("countdown-days").innerText = "00";
+                document.getElementById("countdown-hours").innerText = "00";
+                document.getElementById("countdown-mins").innerText = "00";
+                document.getElementById("countdown-secs").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown-days").innerText = String(days).padStart(2, '0');
+            document.getElementById("countdown-hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("countdown-mins").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("countdown-secs").innerText = String(seconds).padStart(2, '0');
+        }
+
+        // Attendance UI Handler toggle
+        function toggleAttendanceUI(attend) {
+            isAttending = attend;
+            const yesBtn = document.getElementById('attendance-yes');
+            const noBtn = document.getElementById('attendance-no');
+            const conditionalDiv = document.getElementById('rsvp-conditional-fields');
+
+            if (attend) {
+                yesBtn.className = "border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] text-xs uppercase font-bold tracking-widest py-4 transition-all duration-300";
+                noBtn.className = "border border-[var(--brand-border)] text-[var(--brand-darkText)] text-xs uppercase font-bold tracking-widest py-4 transition-all duration-300 hover:bg-[var(--brand-border)]/10";
+                conditionalDiv.style.maxHeight = "500px";
+                document.getElementById('form-seats').setAttribute('required', 'true');
+            } else {
+                noBtn.className = "border border-[var(--brand-darkText)] bg-[var(--brand-darkText)] text-[var(--brand-lightBg)] text-xs uppercase font-bold tracking-widest py-4 transition-all duration-300";
+                yesBtn.className = "border border-[var(--brand-border)] text-[var(--brand-darkText)] text-xs uppercase font-bold tracking-widest py-4 transition-all duration-300 hover:bg-[var(--brand-border)]/10";
+                conditionalDiv.style.maxHeight = "0px";
+                document.getElementById('form-seats').removeAttribute('required');
+            }
+        }
+
+        // Header Scrolling Effects
+        function handleScrollEffect() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('bg-[var(--brand-lightBg)]', 'shadow-md', 'py-3', 'border-b-[var(--brand-border)]');
+                header.classList.remove('bg-transparent', 'py-4', 'md:py-6', 'border-transparent');
+            } else {
+                header.classList.remove('bg-[var(--brand-lightBg)]', 'shadow-md', 'py-3', 'border-b-[var(--brand-border)]');
+                header.classList.add('bg-transparent', 'py-4', 'md:py-6', 'border-transparent');
+            }
+        }
+
+        // Toggle Mobile Menu Drawer
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('translate-x-full');
+        }
+
+        // Toggle Seller Controls Drawer
+        let controlsOpen = true;
+        function toggleControls() {
+            const body = document.getElementById('controls-body');
+            const icon = document.getElementById('toggle-icon');
+            const panel = document.getElementById('seller-controls-panel');
+            
+            if (controlsOpen) {
+                body.style.display = 'none';
+                icon.setAttribute('data-lucide', 'maximize-2');
+                panel.style.transform = 'translateY(calc(100% - 44px))';
+            } else {
+                body.style.display = 'block';
+                icon.setAttribute('data-lucide', 'minimize-2');
+                panel.style.transform = 'translateY(0)';
+            }
+            controlsOpen = !controlsOpen;
+            lucide.createIcons();
+        }
+
+        // Save Date Calendar Generation Hook
+        function addToCalendar() {
+            const title = "陳健朗 & 方葉晴 婚禮雅宴 Wedding Banquet";
+            const details = "期待您的蒞臨，見證我們的幸福旅程！詳情請造訪我們的婚禮網站。";
+            const location = "香港金鐘 JW 萬豪酒店 (JW Marriott Hotel)";
+            const startDate = "20261128T160000";
+            const endDate = "20261128T223000";
+
+            const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+            window.open(googleUrl, '_blank');
+        }
+
+        // Custom Modal UI instead of alert()
+        function showStatusModal(title, desc) {
+            document.getElementById('status-modal-title').innerText = title;
+            document.getElementById('status-modal-desc').innerText = desc;
+            document.getElementById('status-modal').classList.remove('hidden');
+        }
+
+        // Close Status Modal
+        function closeStatusModal() {
+            document.getElementById('status-modal').classList.add('hidden');
+        }
+
+        // Async Form RSVP Stream Submit Logic
+        // STREAMING_CHUNK: Form handling with Google Sheet pipeline integration
+        document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('form-submit-btn');
+            const spinner = document.getElementById('rsvp-loading-spinner');
+
+            // Set states to busy
+            submitBtn.disabled = true;
+            spinner.classList.remove('hidden');
+
+            const payload = {
+                name: document.getElementById('form-name').value,
+                relation: document.getElementById('form-relation').value,
+                attendance: isAttending ? "Attending" : "Declined",
+                seats: isAttending ? document.getElementById('form-seats').value : "0",
+                diet: isAttending ? document.getElementById('form-diet').value : "N/A",
+                message: document.getElementById('form-message').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Grab the active API Target URL
+            const activeApiUrl = document.getElementById('dev-api-url').value || GOOGLE_SHEET_API_URL;
+
+            try {
+                // Post to Google Web App Endpoint with non-CORS preflight technique
+                await fetch(activeApiUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // Simulate DB Statistics increments for client confirmation presentation
+                let currentTotal = parseInt(document.getElementById('stats-total').innerText) || 245;
+                let currentDeclined = parseInt(document.getElementById('stats-declined').innerText) || 12;
+
+                if (isAttending) {
+                    currentTotal += parseInt(payload.seats);
+                    document.getElementById('stats-total').innerText = `${currentTotal} Guests`;
+                } else {
+                    currentDeclined += 1;
+                    document.getElementById('stats-declined').innerText = `${currentDeclined} Guests`;
+                }
+
+                // Show localized visual success modal
+                const title = LANG_DATA[currentLang][isAttending ? 'submit_success_title_yes' : 'submit_success_title_no'];
+                const desc = LANG_DATA[currentLang][isAttending ? 'submit_success_desc_yes' : 'submit_success_desc_no'];
+                showStatusModal(title, desc);
+
+                // Reset Form
+                document.getElementById('rsvp-form').reset();
+                toggleAttendanceUI(true);
+
+            } catch (error) {
+                console.error("Submission failed: ", error);
+                const title = LANG_DATA[currentLang]['submit_fail_title'];
+                const desc = LANG_DATA[currentLang]['submit_fail_desc'];
+                showStatusModal(title, desc);
+            } finally {
+                submitBtn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        });
+
+        // Event Listeners on load & scroll
+        window.addEventListener('scroll', handleScrollEffect);
+        
+        window.onload = function() {
+            // Initiate Lucide Icons
+            lucide.createIcons();
+            
+            // Start Active Timer update
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+
+            // Set default localization
+            setLanguage('zh');
+
+            // Default startup theme is Vermilion
+            changeTheme('vermilion');
+
+            // Wire Dev Panel URL changes to update primary variable
+            document.getElementById('dev-api-url').addEventListener('input', function(e) {
+                GOOGLE_SHEET_API_URL = e.target.value;
+            });
+
+            // Dynamic Scroll-reveal animation triggers via GSAP
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Subtle parallax effect on the central circular paper-cut artwork
+            gsap.to("#hero-parallax-img", {
+                y: "8%",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#welcome",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Smooth content triggers on slide transitions
+            document.querySelectorAll('section').forEach((section) => {
+                gsap.from(section.querySelectorAll('.reveal-element, h2, p, form, .grid'), {
+                    opacity: 0,
+                    y: 35,
+                    duration: 1.2,
+                    stagger: 0.15,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+        };
+    </script>
+</body>
+</html>

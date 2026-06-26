@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chloe & Adrian — The Wedding Celebration</title>
+    
+    <!-- Google Fonts: Playfair Display, Cormorant Garamond, & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- GSAP & ScrollTrigger for elegant premium animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            lightBg: '#FDFBF7',
+                            darkText: '#2C302E',
+                            accent: '#C5A880',
+                            accentDark: '#A3845B',
+                            cardBg: '#F5F1E9',
+                            muted: '#7E8280'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --brand-lightBg: #FDFBF7;
+            --brand-darkText: #2C302E;
+            --brand-accent: #C5A880;
+            --brand-accentDark: #A3845B;
+            --brand-cardBg: #F5F1E9;
+            --brand-muted: #7E8280;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--brand-lightBg);
+            color: var(--brand-darkText);
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .font-editorial {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .image-overlay {
+            position: relative;
+        }
+        .image-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(44,48,46,0) 50%, rgba(44,48,46,0.4) 100%);
+            pointer-events: none;
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .arch-frame {
+            border-top-left-radius: 999px;
+            border-top-right-radius: 999px;
+            overflow: hidden;
+        }
+
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+        }
+        .floating-element {
+            animation: float-slow 8s ease-in-out infinite;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 1px;
+            bottom: -4px;
+            left: 50%;
+            background-color: var(--brand-accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--brand-lightBg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-accent);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- SALES DEMO PANEL: Allows template buyers to test variations and links -->
+    <div id="demo-panel" class="fixed bottom-6 right-6 z-50 bg-white/95 backdrop-blur-md text-brand-darkText border border-brand-accent/20 p-5 rounded-2xl shadow-2xl max-w-sm transition-all duration-300 transform translate-y-0 text-xs">
+        <div class="flex justify-between items-center mb-3">
+            <span class="font-bold tracking-wider text-brand-accent flex items-center gap-1.5 uppercase font-sans text-[10px]">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span data-i18n="demo_title">Seller Demo Controls</span>
+            </span>
+            <button onclick="toggleDemoPanel()" class="text-brand-muted hover:text-brand-darkText p-1" aria-label="Toggle Panel">
+                <i data-lucide="chevrons-right" class="w-4 h-4" id="toggle-panel-icon"></i>
+            </button>
+        </div>
+        <div id="demo-content" class="space-y-3.5">
+            <p class="text-[11px] text-brand-muted" data-i18n="demo_desc">This controller links your Google Sheets database and demonstrates template flexibility to your buyers.</p>
+            
+            <div class="border-t border-brand-accent/10 pt-3">
+                <label class="block font-medium mb-1.5 text-brand-darkText" data-i18n="demo_api_label">Connected Database API:</label>
+                <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 p-2 rounded-lg border border-emerald-200 font-sans text-[10px] font-medium break-all">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                    <span data-i18n="demo_api_status">Live Google Sheet Linked Successfully</span>
+                </div>
+                <input type="text" id="api-url-input" readonly value="https://script.google.com/macros/s/AKfycbxhKANgCFfzBszz3qqUPfHJDECsMj5F3hduwP4AXvpQ91po2qy65wvQ49YSxhyNVU1TaQ/exec"
+                       class="w-full bg-zinc-50 border border-zinc-200 text-zinc-500 p-1.5 rounded mt-1.5 text-[9px] font-mono select-all focus:outline-none focus:ring-0">
+            </div>
+
+            <div class="border-t border-brand-accent/10 pt-3">
+                <label class="block font-medium mb-1.5 text-brand-darkText" data-i18n="demo_dashboard_label">Live Seating Organizer Dashboard:</label>
+                <div class="bg-brand-lightBg p-3 rounded-xl border border-brand-accent/10 space-y-1.5 font-sans text-[10px]">
+                    <div class="flex justify-between text-brand-muted">
+                        <span data-i18n="rel_bride_family">Bride's Family</span>
+                        <span id="stat-bride-family" class="font-semibold text-brand-darkText">24</span>
+                    </div>
+                    <div class="flex justify-between text-brand-muted">
+                        <span data-i18n="rel_groom_family">Groom's Family</span>
+                        <span id="stat-groom-family" class="font-semibold text-brand-darkText">28</span>
+                    </div>
+                    <div class="flex justify-between text-brand-muted">
+                        <span data-i18n="rel_bride_friend">Bride's Friends/Classmates</span>
+                        <span id="stat-bride-friend" class="font-semibold text-brand-darkText">15</span>
+                    </div>
+                    <div class="flex justify-between text-brand-muted">
+                        <span data-i18n="rel_groom_friend">Groom's Friends/Classmates</span>
+                        <span id="stat-groom-friend" class="font-semibold text-brand-darkText">18</span>
+                    </div>
+                    <div class="flex justify-between text-brand-muted">
+                        <span data-i18n="rel_colleague">Colleagues (Bride & Groom)</span>
+                        <span id="stat-colleague" class="font-semibold text-brand-darkText">12</span>
+                    </div>
+                    <div class="flex justify-between text-brand-muted">
+                        <span data-i18n="rel_mutual">Mutual Friends</span>
+                        <span id="stat-mutual" class="font-semibold text-brand-darkText">10</span>
+                    </div>
+                    <div class="pt-1.5 mt-1 border-t border-dashed border-brand-accent/20 flex justify-between text-brand-accent font-bold text-xs">
+                        <span data-i18n="demo_total_guests">Total Expected Guests:</span>
+                        <span id="stat-total">107</span>
+                    </div>
+                </div>
+                <p class="text-[9px] text-brand-muted mt-1 italic" data-i18n="demo_total_tip">Submit an RSVP on the page to watch these stats update in real-time in both your Sheet and here!</p>
+            </div>
+
+            <div class="border-t border-brand-accent/10 pt-3">
+                <label class="block font-medium mb-1.5 text-brand-darkText" data-i18n="demo_toggle_acc_label">Toggle Accommodation Section:</label>
+                <div class="flex items-center justify-between bg-brand-lightBg p-2 rounded-lg border border-brand-accent/10">
+                    <span class="text-[11px] font-sans text-brand-muted" id="accommodation-status-text" data-i18n="demo_acc_disabled">Disabled (HK Local View)</span>
+                    <button onclick="toggleAccommodationSection()" id="accommodation-toggle-btn" class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-zinc-300">
+                        <span class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0" id="toggle-circle"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-brand-accent/10 pt-3">
+                <label class="block font-medium mb-1.5 text-brand-darkText" data-i18n="demo_palette_label">Palette Customizer:</label>
+                <div class="grid grid-cols-3 gap-1.5">
+                    <button onclick="changeTheme('champagne')" class="border border-brand-accent p-1.5 rounded bg-brand-lightBg text-left hover:border-brand-accentDark transition text-[10px] font-medium text-brand-darkText">Champagne</button>
+                    <button onclick="changeTheme('eucalyptus')" class="border border-zinc-200 p-1.5 rounded bg-[#FAFBF9] text-left hover:border-emerald-600 transition text-[10px] text-zinc-700">Eucalyptus</button>
+                    <button onclick="changeTheme('indigo')" class="border border-zinc-200 p-1.5 rounded bg-[#FAFBFC] text-left hover:border-indigo-600 transition text-[10px] text-zinc-700">Indigo</button>
+                </div>
+            </div>
+            
+            <div class="text-[10px] bg-brand-accent/5 text-brand-accentDark p-2 rounded border border-brand-accent/10 text-center" data-i18n="demo_badge">
+                Fully Responsive & Database Linked
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-40 transition-all duration-500 bg-transparent py-6">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="#" class="font-editorial text-2xl md:text-3xl tracking-widest text-brand-darkText hover:opacity-80 transition duration-300">
+                C & A
+            </a>
+            
+            <!-- Desktop Nav Items -->
+            <nav class="hidden md:flex items-center space-x-10 text-xs tracking-widest uppercase font-medium text-brand-darkText">
+                <a href="#welcome" class="nav-link" data-i18n="nav_welcome">Welcome</a>
+                <a href="#story" class="nav-link" data-i18n="nav_story">Our Story</a>
+                <a href="#schedule" class="nav-link" data-i18n="nav_schedule">Schedule</a>
+                <a href="#logistics" class="nav-link" data-i18n="nav_details">Details</a>
+                <a href="#accommodation-section" id="nav-accommodations-link" class="nav-link hidden" data-i18n="nav_accommodations">Accommodations</a>
+                
+                <!-- Elegant Bilingual Language Switcher -->
+                <div class="flex items-center border border-brand-accent/30 rounded-full px-2.5 py-1 text-[10px] tracking-normal font-sans gap-1.5 bg-white/40">
+                    <button onclick="setLanguage('en')" id="lang-btn-en" class="font-bold transition text-brand-accent font-semibold">EN</button>
+                    <span class="text-brand-accent/40">|</span>
+                    <button onclick="setLanguage('zh')" id="lang-btn-zh" class="transition text-brand-muted hover:text-brand-darkText font-medium">繁中</button>
+                </div>
+
+                <a href="#rsvp" class="bg-brand-accent hover:bg-brand-accentDark text-white px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm font-semibold tracking-wider" data-i18n="nav_rsvp">RSVP</a>
+            </nav>
+
+            <!-- Mobile Nav Toggle and Mobile Lang Switcher -->
+            <div class="flex items-center gap-4 md:hidden">
+                <div class="flex items-center border border-brand-accent/30 rounded-full px-2 py-0.5 text-[9px] gap-1 bg-white/40">
+                    <button onclick="setLanguage('en')" id="mob-lang-btn-en" class="font-bold text-brand-accent">EN</button>
+                    <span class="text-brand-accent/40">|</span>
+                    <button onclick="setLanguage('zh')" id="mob-lang-btn-zh" class="text-brand-muted">繁中</button>
+                </div>
+                <button onclick="toggleMobileMenu()" class="text-brand-darkText p-2 focus:outline-none" aria-label="Toggle Menu">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-brand-lightBg z-30 flex flex-col justify-center items-center gap-8 text-lg uppercase tracking-widest font-editorial hidden transition-all duration-500 opacity-0">
+        <a onclick="toggleMobileMenu()" href="#welcome" class="hover:text-brand-accent transition" data-i18n="nav_welcome">Welcome</a>
+        <a onclick="toggleMobileMenu()" href="#story" class="hover:text-brand-accent transition" data-i18n="nav_story">Our Story</a>
+        <a onclick="toggleMobileMenu()" href="#schedule" class="hover:text-brand-accent transition" data-i18n="nav_schedule">Schedule</a>
+        <a onclick="toggleMobileMenu()" href="#logistics" class="hover:text-brand-accent transition" data-i18n="nav_details">Details</a>
+        <a onclick="toggleMobileMenu()" href="#accommodation-section" id="mobile-accommodations-link" class="hover:text-brand-accent transition hidden" data-i18n="nav_accommodations">Accommodations</a>
+        <a onclick="toggleMobileMenu()" href="#rsvp" class="bg-brand-accent text-white px-8 py-3 rounded-full hover:bg-brand-accentDark transition tracking-widest font-sans text-xs" data-i18n="nav_rsvp">RSVP</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="welcome" class="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
+        <!-- Floating Floral Accents in background -->
+        <div class="absolute top-1/4 left-10 md:left-20 w-32 md:w-48 opacity-20 floating-element pointer-events-none">
+            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" class="text-brand-accent w-full h-full">
+                <path d="M10,80 Q30,50 60,30 Q80,10 90,5" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M40,43 Q30,35 25,45 Q35,50 40,43" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M60,30 Q55,15 48,25 Q53,35 60,30" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M75,18 Q75,2 65,8 Q70,20 75,18" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="absolute bottom-1/4 right-10 md:right-24 w-36 md:w-56 opacity-15 floating-element pointer-events-none" style="animation-delay: -3s;">
+            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" class="text-brand-accent w-full h-full">
+                <path d="M90,90 Q70,60 40,40 Q20,20 10,10" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M60,65 Q50,70 52,55 Q62,55 60,65" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M35,45 Q25,35 18,48 Q28,52 35,45" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 py-12">
+            <!-- Column 1: Editorial Text -->
+            <div class="lg:col-span-5 text-center lg:text-left order-2 lg:order-1 flex flex-col justify-center reveal-up">
+                <span class="text-xs uppercase tracking-[0.25em] font-semibold text-brand-accent mb-4 block" data-i18n="hero_badge">Save The Date</span>
+                <h1 class="font-editorial text-5xl md:text-7xl lg:text-[5.5rem] leading-none mb-6 font-light">
+                    Chloe <br class="hidden lg:block"> <span class="italic font-normal font-serif text-brand-accent">&amp;</span> Adrian
+                </h1>
+                <p class="font-sans text-xs uppercase tracking-[0.3em] font-medium text-brand-muted mb-8" data-i18n="hero_date_loc">
+                    November 28, 2026 &bull; Admiralty, Hong Kong
+                </p>
+                
+                <!-- Countdown Component -->
+                <div class="bg-brand-cardBg/60 backdrop-blur-sm border border-brand-accent/15 p-6 rounded-2xl max-w-md mx-auto lg:mx-0 shadow-sm transition-all duration-300">
+                    <p class="text-[10px] uppercase tracking-widest text-brand-accent font-semibold mb-3" data-i18n="countdown_title">Counting down to the day</p>
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <div>
+                            <span id="days" class="font-editorial text-3xl md:text-4xl text-brand-darkText font-light">150</span>
+                            <span class="block text-[9px] uppercase tracking-wider text-brand-muted mt-1" data-i18n="countdown_days">Days</span>
+                        </div>
+                        <div>
+                            <span id="hours" class="font-editorial text-3xl md:text-4xl text-brand-darkText font-light">12</span>
+                            <span class="block text-[9px] uppercase tracking-wider text-brand-muted mt-1" data-i18n="countdown_hours">Hours</span>
+                        </div>
+                        <div>
+                            <span id="minutes" class="font-editorial text-3xl md:text-4xl text-brand-darkText font-light">45</span>
+                            <span class="block text-[9px] uppercase tracking-wider text-brand-muted mt-1" data-i18n="countdown_mins">Mins</span>
+                        </div>
+                        <div>
+                            <span id="seconds" class="font-editorial text-3xl md:text-4xl text-brand-accent font-light">00</span>
+                            <span class="block text-[9px] uppercase tracking-wider text-brand-muted mt-1" data-i18n="countdown_secs">Secs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Elegant Frame Imagery -->
+            <div class="lg:col-span-7 order-1 lg:order-2 flex justify-center items-center reveal-up">
+                <div class="relative w-full max-w-lg">
+                    <!-- Elegant Backing Shape -->
+                    <div class="absolute -inset-4 border border-brand-accent/20 arch-frame translate-x-3 translate-y-3 pointer-events-none"></div>
+                    
+                    <!-- Main Editorial Image Placeholder -->
+                    <div class="arch-frame w-full aspect-[4/5] bg-brand-cardBg shadow-xl overflow-hidden relative group">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200" 
+                             alt="Chloe and Adrian" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out image-overlay"
+                             onerror="this.src='https://placehold.co/600x750/F5F1E9/2C302E?text=Chloe+%26+Adrian';">
+                        <div class="absolute inset-0 bg-black/10 mix-blend-multiply"></div>
+                    </div>
+                    
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-6 -left-6 bg-white border border-brand-accent/20 py-4 px-6 rounded-full shadow-lg text-center hidden sm:block">
+                        <span class="font-editorial italic text-lg text-brand-accent block leading-none" data-i18n="hero_badge_italic">We are</span>
+                        <span class="font-sans text-[9px] uppercase tracking-widest font-semibold text-brand-darkText mt-1 block" data-i18n="hero_badge_bold">Getting Married!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="py-24 bg-brand-cardBg/40 border-y border-brand-accent/10 overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6 md:px-12">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal-up">
+                <span class="text-xs uppercase tracking-[0.25em] font-semibold text-brand-accent mb-3 block" data-i18n="story_tag">The Journey</span>
+                <h2 class="font-editorial text-4xl md:text-5xl font-light" data-i18n="story_title">Our Story</h2>
+                <div class="w-12 h-[1px] bg-brand-accent mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                
+                <!-- Couple Portrait Placeholder -->
+                <div class="reveal-up">
+                    <div class="relative max-w-md mx-auto">
+                        <div class="absolute inset-0 border border-brand-accent/20 rounded-3xl translate-x-4 translate-y-4 pointer-events-none"></div>
+                        <div class="rounded-3xl overflow-hidden aspect-[3/4] bg-zinc-200 shadow-xl group">
+                            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1200" 
+                                 alt="Our Proposal Story" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                                 onerror="this.src='https://placehold.co/600x800/FAF6F0/2C302E?text=Our+Proposal';">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Narration (Hong Kong Context integration) -->
+                <div class="space-y-6 md:pr-6 reveal-up">
+                    <h3 class="font-editorial text-3xl font-light italic text-brand-accent" data-i18n="story_sub">From the bustling streets of Central to the quiet shores of Sai Kung...</h3>
+                    
+                    <p class="text-sm text-brand-muted leading-relaxed" data-i18n="story_p1">
+                        We first met in Hong Kong on a rainy evening, sharing an umbrella at the Star Ferry pier in Tsim Sha Tsui. What started as a chance meeting under the city lights quickly blossomed into a profound connection, built on weekend hikes up Sunset Peak, shared milk teas, and quiet walks along the coastline.
+                    </p>
+                    
+                    <p class="text-sm text-brand-muted leading-relaxed" data-i18n="story_p2">
+                        Adrian proposed on a beautiful crisp evening in autumn, looking out over the panoramic skyline of our beloved city. With the harbor sparkling below us, Chloe said "Yes!" to a lifetime of adventures together.
+                    </p>
+
+                    <p class="text-sm text-brand-muted leading-relaxed" data-i18n="story_p3">
+                        We cannot wait to write our next chapter and celebrate our love with all of our amazing friends and family from Hong Kong and beyond!
+                    </p>
+
+                    <div class="pt-4 flex items-center gap-4">
+                        <div class="h-[1px] w-12 bg-brand-accent"></div>
+                        <span class="font-editorial italic text-xl text-brand-accent" data-i18n="story_author">With love, Chloe &amp; Adrian</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section (Tailored for Hong Kong typical timeline) -->
+    <section id="schedule" class="py-24">
+        <div class="max-w-6xl mx-auto px-6 md:px-12">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal-up">
+                <span class="text-xs uppercase tracking-[0.25em] font-semibold text-brand-accent mb-3 block" data-i18n="schedule_tag">The Big Day Details</span>
+                <h2 class="font-editorial text-4xl md:text-5xl font-light" data-i18n="schedule_title">Schedule of Events</h2>
+                <p class="text-xs text-brand-muted mt-3 font-medium uppercase tracking-widest" data-i18n="schedule_date">Saturday, November 28, 2026</p>
+                <div class="w-12 h-[1px] bg-brand-accent mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                
+                <!-- Event 1: The Ceremony -->
+                <div class="bg-brand-cardBg/30 border border-brand-accent/10 p-8 rounded-3xl hover:border-brand-accent transition-all duration-300 relative reveal-up flex flex-col justify-between">
+                    <div>
+                        <span class="absolute top-6 right-8 font-editorial text-5xl italic text-brand-accent/20">01</span>
+                        <span class="inline-block bg-brand-accent/10 text-brand-accentDark text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-6" data-i18n="evt_ceremony_type">Solemnisation &amp; Vows</span>
+                        <h3 class="font-editorial text-2xl mb-2 font-medium" data-i18n="evt_ceremony_title">The Wedding Ceremony</h3>
+                        <p class="text-xs text-brand-accent font-medium uppercase tracking-wider mb-4">4:30 PM — 5:30 PM</p>
+                        <p class="text-sm text-brand-muted mb-6 leading-relaxed" data-i18n="evt_ceremony_desc">
+                            Join us as we exchange our vows and make our commitment official in an intimate outdoor garden setting. Please arrive 15 minutes early to secure your seat.
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="addToCalendar('ceremony')" class="inline-flex items-center gap-2 border border-brand-accent text-brand-accentDark hover:bg-brand-accent hover:text-white px-4 py-2 rounded-xl transition text-xs font-semibold mb-6">
+                            <i data-lucide="calendar" class="w-4 h-4"></i> <span data-i18n="btn_add_calendar">Add to Calendar</span>
+                        </button>
+                        <div class="border-t border-brand-accent/15 pt-4 text-xs text-brand-muted flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-brand-accent"></i>
+                            <span data-i18n="evt_ceremony_loc">The Glass Pavilion, Admiralty, Hong Kong</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event 2: Cocktail Hour & Banquet -->
+                <div class="bg-brand-cardBg/30 border border-brand-accent/10 p-8 rounded-3xl hover:border-brand-accent transition-all duration-300 relative reveal-up flex flex-col justify-between">
+                    <div>
+                        <span class="absolute top-6 right-8 font-editorial text-5xl italic text-brand-accent/20">02</span>
+                        <span class="inline-block bg-brand-accent/10 text-brand-accentDark text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-6" data-i18n="evt_banquet_type">Banquet Dinner</span>
+                        <h3 class="font-editorial text-2xl mb-2 font-medium" data-i18n="evt_banquet_title">Cocktails &amp; Evening Reception</h3>
+                        <p class="text-xs text-brand-accent font-medium uppercase tracking-wider mb-4">6:30 PM Cocktails | 7:30 PM Banquet</p>
+                        <p class="text-sm text-brand-muted mb-6 leading-relaxed" data-i18n="evt_banquet_desc">
+                            Let's celebrate! Raise a glass with us during our cocktail reception, followed by an elegant multi-course dinner banquet filled with toastings, laughter, and endless dancing.
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="addToCalendar('banquet')" class="inline-flex items-center gap-2 border border-brand-accent text-brand-accentDark hover:bg-brand-accent hover:text-white px-4 py-2 rounded-xl transition text-xs font-semibold mb-6">
+                            <i data-lucide="calendar" class="w-4 h-4"></i> <span data-i18n="btn_add_calendar">Add to Calendar</span>
+                        </button>
+                        <div class="border-t border-brand-accent/15 pt-4 text-xs text-brand-muted flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-brand-accent"></i>
+                            <span data-i18n="evt_banquet_loc">Grand Ballroom, JW Marriott Hotel Hong Kong, Admiralty</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Notice / Dress Code -->
+            <div class="mt-12 bg-brand-cardBg/60 border border-brand-accent/10 p-6 rounded-2xl max-w-2xl mx-auto text-center reveal-up">
+                <h4 class="font-sans text-xs uppercase tracking-[0.2em] font-bold text-brand-accent mb-2" data-i18n="dress_code_title">Dress Code &amp; Attire</h4>
+                <p class="text-xs text-brand-muted leading-relaxed" data-i18n="dress_code_desc">
+                    Formal or Cocktail Attire. We kindly request our guests to dress elegantly to celebrate our formal evening with us. Soft earthy neutrals, sage greens, champagne, or deep rose tones are warmly welcome!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Details Section (Transport & Registry) -->
+    <section id="logistics" class="py-24 bg-brand-cardBg/40 border-t border-brand-accent/10">
+        <div class="max-w-6xl mx-auto px-6 md:px-12">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal-up">
+                <span class="text-xs uppercase tracking-[0.25em] font-semibold text-brand-accent mb-3 block" data-i18n="logistics_tag">Guest Guidelines</span>
+                <h2 class="font-editorial text-4xl md:text-5xl font-light" data-i18n="logistics_title">Transportation &amp; Registry</h2>
+                <div class="w-12 h-[1px] bg-brand-accent mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Transportation Guidance (Highly Crucial for Hong Kong) -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-accent/10 flex flex-col justify-between reveal-up">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="p-2 bg-brand-accent/10 text-brand-accentDark rounded-xl">
+                                <i data-lucide="map" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-editorial text-2xl font-medium" data-i18n="trans_title">How to Get There</h3>
+                        </div>
+                        
+                        <p class="text-sm text-brand-muted mb-6" data-i18n="trans_desc">
+                            The JW Marriott Hotel is located directly in Pacific Place. It is highly accessible via public transport.
+                        </p>
+
+                        <div class="space-y-4">
+                            <!-- MTR Instruction -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">M</div>
+                                <div>
+                                    <h4 class="text-xs uppercase tracking-wider font-bold text-brand-darkText" data-i18n="trans_mtr_title">By MTR (Subway)</h4>
+                                    <p class="text-xs text-brand-muted" data-i18n="trans_mtr_desc">Take the Island Line or Tsuen Wan Line to <strong>Admiralty Station (Exit F)</strong>. The hotel is directly accessible through the luxury retail mall (Pacific Place).</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Driving & Parking Instruction -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded-full bg-brand-accent text-white flex items-center justify-center shrink-0 mt-0.5">
+                                    <i data-lucide="car" class="w-3 h-3"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs uppercase tracking-wider font-bold text-brand-darkText" data-i18n="trans_car_title">Driving &amp; Parking</h4>
+                                    <p class="text-xs text-brand-muted" data-i18n="trans_car_desc">Valet parking is available at the hotel entrance. Complimentary dining guest parking is available for up to 3 hours with validated receipts from the banquet registration desk.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Digital Red Packet / Registry (HK modern standard style) -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-accent/10 flex flex-col justify-between reveal-up">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="p-2 bg-brand-accent/10 text-brand-accentDark rounded-xl">
+                                <i data-lucide="gift" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="font-editorial text-2xl font-medium" data-i18n="gift_title">Digital Red Packet &amp; Gift</h3>
+                        </div>
+                        
+                        <p class="text-sm text-brand-muted mb-6" data-i18n="gift_desc">
+                            Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, a contribution towards our dream honeymoon would be warmly appreciated.
+                        </p>
+
+                        <div class="space-y-3.5 bg-brand-cardBg/40 p-5 rounded-2xl border border-brand-accent/10 font-sans">
+                            <div class="flex justify-between items-center text-xs pb-2 border-b border-brand-accent/10">
+                                <span class="font-semibold text-brand-darkText" data-i18n="gift_fps">FPS (Faster Payment System) ID</span>
+                                <span class="font-mono text-brand-accent font-semibold tracking-wider">161234901</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs pb-2 border-b border-brand-accent/10">
+                                <span class="font-semibold text-brand-darkText" data-i18n="gift_payme">PayMe Transfer</span>
+                                <span class="text-brand-accent font-semibold flex items-center gap-1">
+                                    <i data-lucide="qr-code" class="w-4 h-4"></i> <span data-i18n="gift_payme_desc">Scan QR at Banquet</span>
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-semibold text-brand-darkText" data-i18n="gift_traditional">Traditional Red Packets</span>
+                                <span class="text-brand-muted text-[11px]" data-i18n="gift_traditional_desc">Reception desk box provided</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Accommodation Section (Toggleable by buyer helper panel at bottom-right) -->
+    <section id="accommodation-section" class="py-24 border-t border-brand-accent/10 hidden">
+        <div class="max-w-6xl mx-auto px-6 md:px-12">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal-up">
+                <span class="text-xs uppercase tracking-[0.25em] font-semibold text-brand-accent mb-3 block" data-i18n="acc_tag">For Out Of Town Guests</span>
+                <h2 class="font-editorial text-4xl md:text-5xl font-light" data-i18n="acc_title">Recommended Accommodations</h2>
+                <div class="w-12 h-[1px] bg-brand-accent mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Hotel Option 1 -->
+                <div class="bg-brand-cardBg/40 rounded-3xl overflow-hidden border border-brand-accent/10 shadow-sm flex flex-col h-full hover:shadow-md transition">
+                    <div class="aspect-[16/10] bg-zinc-200">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800" alt="JW Marriott HK" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x250/F5F1E9/2C302E?text=JW+Marriott';">
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-editorial text-xl font-semibold mb-1">JW Marriott Hotel</h3>
+                            <p class="text-xs text-brand-accent tracking-widest uppercase mb-4 font-medium" data-i18n="hotel1_badge">Direct Venue Hotel</p>
+                            <p class="text-xs text-brand-muted leading-relaxed mb-6" data-i18n="hotel1_desc">
+                                The ceremony and reception venue. We have arranged a premium wedding room block discount rate for our wedding guests.
+                            </p>
+                        </div>
+                        <a href="#" class="inline-block text-center border border-brand-accent text-brand-accentDark hover:bg-brand-accent hover:text-white px-5 py-2 rounded-xl transition font-sans text-xs tracking-wider" data-i18n="btn_book_room">Book Block Room</a>
+                    </div>
+                </div>
+
+                <!-- Hotel Option 2 -->
+                <div class="bg-brand-cardBg/40 rounded-3xl overflow-hidden border border-brand-accent/10 shadow-sm flex flex-col h-full hover:shadow-md transition">
+                    <div class="aspect-[16/10] bg-zinc-200">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=800" alt="Conrad HK" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x250/F5F1E9/2C302E?text=Conrad+HK';">
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-editorial text-xl font-semibold mb-1">Conrad Hong Kong</h3>
+                            <p class="text-xs text-brand-accent tracking-widest uppercase mb-4 font-medium" data-i18n="hotel2_badge">Adjacent Luxury Hotel</p>
+                            <p class="text-xs text-brand-muted leading-relaxed mb-6" data-i18n="hotel2_desc">
+                                Located in Pacific Place directly adjoining the wedding banquet halls. Extremely easy pedestrian walkway access.
+                            </p>
+                        </div>
+                        <a href="#" class="inline-block text-center border border-brand-accent text-brand-accentDark hover:bg-brand-accent hover:text-white px-5 py-2 rounded-xl transition font-sans text-xs tracking-wider" data-i18n="btn_view_rates">View Rates</a>
+                    </div>
+                </div>
+
+                <!-- Hotel Option 3 -->
+                <div class="bg-brand-cardBg/40 rounded-3xl overflow-hidden border border-brand-accent/10 shadow-sm flex flex-col h-full hover:shadow-md transition">
+                    <div class="aspect-[16/10] bg-zinc-200">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800" alt="The Upper House" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x250/F5F1E9/2C302E?text=Upper+House';">
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-editorial text-xl font-semibold mb-1">The Upper House</h3>
+                            <p class="text-xs text-brand-accent tracking-widest uppercase mb-4 font-medium" data-i18n="hotel3_badge">Boutique Luxury Hotel</p>
+                            <p class="text-xs text-brand-muted leading-relaxed mb-6" data-i18n="hotel3_desc">
+                                A highly renowned designer boutique hotel for guests seeking a special sensory lifestyle stay during their trip.
+                            </p>
+                        </div>
+                        <a href="#" class="inline-block text-center border border-brand-accent text-brand-accentDark hover:bg-brand-accent hover:text-white px-5 py-2 rounded-xl transition font-sans text-xs tracking-wider" data-i18n="btn_view_rates">View Rates</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section id="rsvp" class="py-24 bg-brand-lightBg relative">
+        <div class="max-w-3xl mx-auto px-6">
+            
+            <div class="text-center max-w-2xl mx-auto mb-12 reveal-up">
+                <span class="text-xs uppercase tracking-[0.25em] font-semibold text-brand-accent mb-3 block" data-i18n="rsvp_tag">Kindly Respond</span>
+                <h2 class="font-editorial text-4xl md:text-5xl font-light" data-i18n="rsvp_title">RSVP Online</h2>
+                <p class="text-xs text-brand-muted mt-3" data-i18n="rsvp_deadline">Please submit your response by October 15, 2026</p>
+                <div class="w-12 h-[1px] bg-brand-accent mx-auto mt-6"></div>
+            </div>
+
+            <!-- RSVP Custom Form Container -->
+            <div class="bg-brand-cardBg border border-brand-accent/20 p-8 md:p-12 rounded-3xl shadow-lg relative overflow-hidden reveal-up">
+                <div class="absolute -top-12 -right-12 w-24 h-24 bg-brand-accent/5 rounded-full blur-xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-brand-accent/5 rounded-full blur-xl pointer-events-none"></div>
+
+                <!-- Form Success State -->
+                <div id="rsvp-success" class="hidden text-center py-12 space-y-6">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="check" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-editorial text-3xl font-light" data-i18n="rsvp_success_heading">Thank You for Your Response!</h3>
+                    <p class="text-sm text-brand-muted max-w-md mx-auto leading-relaxed" id="success-msg">
+                        We have successfully registered your details in our spreadsheet. We look forward to celebrating this joyful occasion with you soon!
+                    </p>
+                    <button onclick="resetRSVPForm()" class="text-xs text-brand-accent uppercase tracking-widest font-semibold hover:text-brand-accentDark transition" data-i18n="btn_submit_another">Submit Another RSVP</button>
+                </div>
+
+                <!-- Primary Interactive Form -->
+                <form id="wedding-rsvp-form" onsubmit="handleRSVPSubmit(event)" class="space-y-6">
+                    
+                    <!-- Form Row 1: Guest Full Name -->
+                    <div class="space-y-2">
+                        <label for="fullname" class="block text-xs uppercase tracking-widest font-semibold text-brand-darkText" data-i18n="frm_name_label">Your Full Name</label>
+                        <input type="text" id="fullname" required placeholder="e.g., Janice Chan"
+                               class="w-full bg-white/85 border border-brand-accent/20 focus:border-brand-accent px-4 py-3 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-accent transition text-sm text-brand-darkText">
+                    </div>
+
+                    <!-- Phone Number Input Section -->
+                    <div class="space-y-2">
+                        <label for="phone" class="block text-xs uppercase tracking-widest font-semibold text-brand-darkText" data-i18n="frm_phone_label">Phone Number</label>
+                        <input type="tel" id="phone" required placeholder="e.g., +852 9123 4567"
+                               class="w-full bg-white/85 border border-brand-accent/20 focus:border-brand-accent px-4 py-3 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-accent transition text-sm text-brand-darkText">
+                        <p class="text-[10px] text-brand-muted italic" data-i18n="frm_phone_tip">Used to coordinate table adjustments or immediate updates.</p>
+                    </div>
+
+                    <!-- Form Row 2: Relationship Selector -->
+                    <div class="space-y-2">
+                        <label for="relationship" class="block text-xs uppercase tracking-widest font-semibold text-brand-darkText" data-i18n="frm_rel_label">How do you know us?</label>
+                        <select id="relationship" required class="w-full bg-white/85 border border-brand-accent/20 focus:border-brand-accent px-4 py-3 rounded-xl focus:outline-none text-sm text-brand-darkText">
+                            <option value="" disabled selected data-i18n="frm_rel_placeholder">Please select your relationship</option>
+                            <option value="bride-family" data-i18n="rel_bride_family">Family (Bride's Side)</option>
+                            <option value="groom-family" data-i18n="rel_groom_family">Family (Groom's Side)</option>
+                            <option value="bride-friend" data-i18n="rel_bride_friend">Bride's Friends/Classmates</option>
+                            <option value="groom-friend" data-i18n="rel_groom_friend">Groom's Friends/Classmates</option>
+                            <option value="colleague" data-i18n="rel_colleague">Colleague (Bride or Groom)</option>
+                            <option value="mutual" data-i18n="rel_mutual">Mutual Friend</option>
+                        </select>
+                        <p class="text-[10px] text-brand-muted italic" data-i18n="frm_rel_tip">Helps us effortlessly organize guest seating allocations.</p>
+                    </div>
+
+                    <!-- Attendance Switch -->
+                    <div class="space-y-2.5">
+                        <label class="block text-xs uppercase tracking-widest font-semibold text-brand-darkText" data-i18n="frm_att_label">Will You Be Attending?</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="relative flex items-center justify-center border border-brand-accent/20 p-4 rounded-xl cursor-pointer hover:bg-brand-accent/5 transition-all text-sm font-medium" id="label-accept">
+                                <input type="radio" name="attendance" value="accept" required onclick="toggleAttendanceUI('accept')" class="sr-only">
+                                <span class="text-brand-darkText" id="text-accept" data-i18n="frm_att_accept">Accepts with Pleasure</span>
+                            </label>
+                            <label class="relative flex items-center justify-center border border-brand-accent/20 p-4 rounded-xl cursor-pointer hover:bg-brand-accent/5 transition-all text-sm font-medium" id="label-decline">
+                                <input type="radio" name="attendance" value="decline" required onclick="toggleAttendanceUI('decline')" class="sr-only">
+                                <span class="text-brand-muted" id="text-decline" data-i18n="frm_att_decline">Declines with Regret</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Sub-fields: Seats count & diet (Animate in) -->
+                    <div id="conditional-fields" class="space-y-5 transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                        
+                        <!-- Seats Allocated (Max 5) -->
+                        <div class="space-y-2">
+                            <label for="seats" class="block text-xs uppercase tracking-widest font-semibold text-brand-darkText" data-i18n="frm_seats_label">Number of Seats Allocated</label>
+                            <select id="seats" class="w-full bg-white/85 border border-brand-accent/20 focus:border-brand-accent px-4 py-3 rounded-xl focus:outline-none text-sm text-brand-darkText">
+                                <option value="1" data-i18n="seat_1">1 Seat</option>
+                                <option value="2" selected data-i18n="seat_2">2 Seats (Plus One)</option>
+                                <option value="3" data-i18n="seat_3">3 Seats</option>
+                                <option value="4" data-i18n="seat_4">4 Seats</option>
+                                <option value="5" data-i18n="seat_5">5 Seats</option>
+                            </select>
+                        </div>
+
+                        <!-- Diet restrictions -->
+                        <div class="space-y-2">
+                            <label for="diet" class="block text-xs uppercase tracking-widest font-semibold text-brand-darkText" data-i18n="frm_diet_label">Dietary Restrictions or Allergies</label>
+                            <input type="text" id="diet" placeholder="None, Gluten-free, Seafood allergy, etc."
+                                   class="w-full bg-white/85 border border-brand-accent/20 focus:border-brand-accent px-4 py-3 rounded-xl focus:outline-none text-sm text-brand-darkText">
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button type="submit" class="w-full bg-brand-accent hover:bg-brand-accentDark text-white py-4 px-6 rounded-2xl shadow-md transition duration-300 font-semibold uppercase tracking-wider text-xs flex justify-center items-center gap-2" id="submit-btn">
+                        <span data-i18n="btn_submit">Submit Response</span>
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-brand-darkText text-white border-t border-brand-accent/10">
+        <div class="max-w-6xl mx-auto px-6 text-center space-y-4">
+            <h2 class="font-editorial text-3xl tracking-widest font-light">Chloe &amp; Adrian</h2>
+            <p class="text-[10px] uppercase tracking-widest text-brand-accent font-semibold" data-i18n="footer_date">November 28, 2026 &bull; Admiralty, Hong Kong</p>
+            <div class="w-8 h-[1px] bg-brand-accent/30 mx-auto"></div>
+            <p class="text-[10px] text-brand-muted/70" data-i18n="footer_signature">Designed for elegance, engineered for love. Made beautifully for wedding couples.</p>
+        </div>
+    </footer>
+
+    <script>
+        // CONFIGURATION FLAGS
+        const SHOW_DEMO_PANEL = true; // Set to false to completely hide/remove the seller controls for real wedding guests!
+        const DEFAULT_THEME = 'indigo'; // Set the default startup theme: 'champagne', 'eucalyptus', or 'indigo'
+        
+        // YOUR LIVE GOOGLE SHEET WEB APP API URL
+        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxhKANgCFfzBszz3qqUPfHJDECsMj5F3hduwP4AXvpQ91po2qy65wvQ49YSxhyNVU1TaQ/exec";
+
+        // Active Language State (Default: 'en')
+        let currentLanguage = 'en';
+
+        // Translation Dictionary
+        const LANG_DATA = {
+            en: {
+                demo_title: "Seller Demo Controls",
+                demo_desc: "This controller links your Google Sheets database and demonstrates template flexibility to your buyers.",
+                demo_api_label: "Connected Database API:",
+                demo_api_status: "Live Google Sheet Linked Successfully",
+                demo_dashboard_label: "Live Seating Organizer Dashboard:",
+                demo_total_guests: "Total Expected Guests:",
+                demo_total_tip: "Submit an RSVP on the page to watch these stats update in real-time in both your Sheet and here!",
+                demo_toggle_acc_label: "Toggle Accommodation Section:",
+                demo_acc_disabled: "Disabled (HK Local View)",
+                demo_acc_enabled: "Enabled (International View)",
+                demo_palette_label: "Palette Customizer:",
+                demo_badge: "Fully Responsive & Database Linked",
+                
+                nav_welcome: "Welcome",
+                nav_story: "Our Story",
+                nav_schedule: "Schedule",
+                nav_details: "Details",
+                nav_accommodations: "Accommodations",
+                nav_rsvp: "RSVP",
+
+                hero_badge: "Save The Date",
+                hero_date_loc: "November 28, 2026 • Admiralty, Hong Kong",
+                countdown_title: "Counting down to the day",
+                countdown_days: "Days",
+                countdown_hours: "Hours",
+                countdown_mins: "Mins",
+                countdown_secs: "Secs",
+                hero_badge_italic: "We are",
+                hero_badge_bold: "Getting Married!",
+
+                story_tag: "The Journey",
+                story_title: "Our Story",
+                story_sub: "From the bustling streets of Central to the quiet shores of Sai Kung...",
+                story_p1: "We first met in Hong Kong on a rainy evening, sharing an umbrella at the Star Ferry pier in Tsim Sha Tsui. What started as a chance meeting under the city lights quickly blossomed into a profound connection, built on weekend hikes up Sunset Peak, shared milk teas, and quiet walks along the coastline.",
+                story_p2: "Adrian proposed on a beautiful crisp evening in autumn, looking out over the panoramic skyline of our beloved city. With the harbor sparkling below us, Chloe said 'Yes!' to a lifetime of adventures together.",
+                story_p3: "We cannot wait to write our next chapter and celebrate our love with all of our amazing friends and family from Hong Kong and beyond!",
+                story_author: "With love, Chloe & Adrian",
+
+                schedule_tag: "The Big Day Details",
+                schedule_title: "Schedule of Events",
+                schedule_date: "Saturday, November 28, 2026",
+                evt_ceremony_type: "Solemnisation & Vows",
+                evt_ceremony_title: "The Wedding Ceremony",
+                evt_ceremony_desc: "Join us as we exchange our vows and make our commitment official in an intimate outdoor garden setting. Please arrive 15 minutes early to secure your seat.",
+                evt_ceremony_loc: "The Glass Pavilion, Admiralty, Hong Kong",
+                evt_banquet_type: "Banquet Dinner",
+                evt_banquet_title: "Cocktails & Evening Reception",
+                evt_banquet_desc: "Let's celebrate! Raise a glass with us during our cocktail reception, followed by an elegant multi-course dinner banquet filled with toastings, laughter, and endless dancing.",
+                evt_banquet_loc: "Grand Ballroom, JW Marriott Hotel Hong Kong, Admiralty",
+                btn_add_calendar: "Add to Calendar",
+                dress_code_title: "Dress Code & Attire",
+                dress_code_desc: "Formal or Cocktail Attire. We kindly request our guests to dress elegantly to celebrate our formal evening with us. Soft earthy neutrals, sage greens, champagne, or deep rose tones are warmly welcome!",
+
+                logistics_tag: "Guest Guidelines",
+                logistics_title: "Transportation & Registry",
+                trans_title: "How to Get There",
+                trans_desc: "The JW Marriott Hotel is located directly in Pacific Place. It is highly accessible via public transport.",
+                trans_mtr_title: "By MTR (Subway)",
+                trans_mtr_desc: "Take the Island Line or Tsuen Wan Line to Admiralty Station (Exit F). The hotel is directly accessible through the luxury retail mall (Pacific Place).",
+                trans_car_title: "Driving & Parking",
+                trans_car_desc: "Valet parking is available at the hotel entrance. Complimentary dining guest parking is available for up to 3 hours with validated receipts from the banquet registration desk.",
+                gift_title: "Digital Red Packet & Gift",
+                gift_desc: "Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, a contribution towards our dream honeymoon would be warmly appreciated.",
+                gift_fps: "FPS (Faster Payment System) ID",
+                gift_payme: "PayMe Transfer",
+                gift_payme_desc: "Scan QR at Banquet",
+                gift_traditional: "Traditional Red Packets",
+                gift_traditional_desc: "Reception desk box provided",
+
+                acc_tag: "For Out Of Town Guests",
+                acc_title: "Recommended Accommodations",
+                hotel1_badge: "Direct Venue Hotel",
+                hotel1_desc: "The ceremony and reception venue. We have arranged a premium wedding room block discount rate for our wedding guests.",
+                hotel2_badge: "Adjacent Luxury Hotel",
+                hotel2_desc: "Located in Pacific Place directly adjoining the wedding banquet halls. Extremely easy pedestrian walkway access.",
+                hotel3_badge: "Boutique Luxury Hotel",
+                hotel3_desc: "A highly renowned designer boutique hotel for guests seeking a special sensory lifestyle stay during their trip.",
+                btn_book_room: "Book Block Room",
+                btn_view_rates: "View Rates",
+
+                rsvp_tag: "Kindly Respond",
+                rsvp_title: "RSVP Online",
+                rsvp_deadline: "Please submit your response by October 15, 2026",
+                rsvp_success_heading: "Thank You for Your Response!",
+                btn_submit_another: "Submit Another RSVP",
+                frm_name_label: "Your Full Name",
+                frm_phone_label: "Phone Number",
+                frm_phone_tip: "Used to coordinate table adjustments or immediate updates.",
+                frm_rel_label: "How do you know us?",
+                frm_rel_placeholder: "Please select your relationship",
+                frm_rel_tip: "Helps us effortlessly organize guest seating allocations.",
+                frm_att_label: "Will You Be Attending?",
+                frm_att_accept: "Accepts with Pleasure",
+                frm_att_decline: "Declines with Regret",
+                frm_seats_label: "Number of Seats Allocated",
+                frm_diet_label: "Dietary Restrictions or Allergies",
+                btn_submit: "Submit Response",
+                btn_sending: "Sending RSVP...",
+
+                rel_bride_family: "Bride's Family",
+                rel_groom_family: "Groom's Family",
+                rel_bride_friend: "Bride's Friends/Classmates",
+                rel_groom_friend: "Groom's Friends/Classmates",
+                rel_colleague: "Colleagues",
+                rel_mutual: "Mutual Friends",
+
+                seat_1: "1 Seat",
+                seat_2: "2 Seats (Plus One)",
+                seat_3: "3 Seats",
+                seat_4: "4 Seats",
+                seat_5: "5 Seats",
+
+                footer_date: "November 28, 2026 • Admiralty, Hong Kong",
+                footer_signature: "Designed for elegance, engineered for love. Made beautifully for wedding couples.",
+                
+                placeholder_name: "e.g., Janice Chan",
+                placeholder_diet: "None, Gluten-free, Seafood allergy, etc."
+            },
+            zh: {
+                demo_title: "賣家示範控制台",
+                demo_desc: "此控制台可與您的 Google 試算表資料庫即時串接，向買家展示客製化的高彈性功能。",
+                demo_api_label: "已串接的資料庫 API：",
+                demo_api_status: "Google 試算表已成功即時連線",
+                demo_dashboard_label: "即時賓客座位統計儀表板：",
+                demo_total_guests: "預計出席賓客總數：",
+                demo_total_tip: "請於上方提交一份 RSVP 表單，即可看見此儀表板與您的試算表同步即時更新！",
+                demo_toggle_acc_label: "顯示/隱藏推薦住宿區塊：",
+                demo_acc_disabled: "已隱藏 (適用香港本地賓客)",
+                demo_acc_enabled: "已顯示 (適用海外賓客)",
+                demo_palette_label: "婚禮主題配色切換：",
+                demo_badge: "支援響應式設計及資料庫串接",
+
+                nav_welcome: "歡迎致詞",
+                nav_story: "我們的故事",
+                nav_schedule: "婚禮日程",
+                nav_details: "交通禮金",
+                nav_accommodations: "推薦住宿",
+                nav_rsvp: "線上回覆",
+
+                hero_badge: "誠摯邀請",
+                hero_date_loc: "2026年11月28日 &bull; 香港金鐘",
+                countdown_title: "婚禮倒數計時",
+                countdown_days: "天",
+                countdown_hours: "時",
+                countdown_mins: "分",
+                countdown_secs: "秒",
+                hero_badge_italic: "我們",
+                hero_badge_bold: "要結婚了！",
+
+                story_tag: "愛情長跑",
+                story_title: "我們的故事",
+                story_sub: "從繁華的中環街頭，到寧靜的西貢海岸...",
+                story_p1: "我們在香港相遇。那是一個下雨的傍晚，在尖沙咀天星碼頭，我們偶然共用了一把雨傘。在都市霓虹下閃現的緣分，很快化成了深厚的連結。此後，我們一同征服大東山的週末遠足、分享地道奶茶，並在悠閒的海岸線留下無數足跡。",
+                story_p2: "在一個秋高氣爽的傍晚， Adrian 在眺望著維多利亞港璀璨夜景的制高點向 Chloe 求婚。看著璀璨的維多利亞港，Chloe 欣然答應，攜手步入人生的下一階段。",
+                story_p3: "我們迫不及待想翻開生命中的全新篇章，並期待與所有來自香港及各地的摯愛親朋一同見證與分享這份喜悅！",
+                story_author: "誠摯邀請, 葉晴 (Chloe) & 健朗 (Adrian)",
+
+                schedule_tag: "大喜之日資訊",
+                schedule_title: "婚禮日程",
+                schedule_date: "2026年11月28日 (星期六)",
+                evt_ceremony_type: "證婚儀式與誓盟",
+                evt_ceremony_title: "證婚儀式",
+                evt_ceremony_desc: "誠邀您在溫馨優雅的戶外玻璃花園中，見證我們交換誓詞與互許終身的時刻。請提前 15 分鐘到場入座。",
+                evt_ceremony_loc: "香港金鐘 戶外玻璃庭園",
+                evt_banquet_type: "喜宴晚宴",
+                evt_banquet_title: "雞尾酒會與婚禮晚宴",
+                evt_banquet_desc: "證婚儀式後，讓我們舉杯共慶！晚宴設有精緻的多道精緻中式婚宴佳餚，並伴隨真摯祝福、歡聲笑語以及溫馨感動的互動時刻。",
+                evt_banquet_loc: "香港萬豪酒店 大宴會廳 (金鐘太古廣場)",
+                btn_add_calendar: "加入行事曆",
+                dress_code_title: "著裝守則 / 穿著建議",
+                dress_code_desc: "正式西裝或雞尾酒晚禮服。我們誠摯邀請賓客穿著得體優雅的服飾出席。非常歡迎大地色系、鼠尾草綠、香檳金或煙粉色調的穿搭！",
+
+                logistics_tag: "賓客指南",
+                logistics_title: "交通指南與禮金",
+                trans_title: "交通資訊",
+                trans_desc: "香港萬豪酒店直接連通金鐘太古廣場，公共交通極其便捷。",
+                trans_mtr_title: "乘搭港鐵 (MTR)",
+                trans_mtr_desc: "乘搭港島綫、荃灣綫、南港島綫或東鐵綫至 **金鐘站 (F出口)**。酒店與太古廣場奢華購物商場直接相連，沿室內通道步行即可直達。",
+                trans_car_title: "自駕與泊車",
+                trans_car_desc: "酒店正門提供代客泊車服務。於宴會接待處登記及蓋章，即可享有高達 3 小時的晚宴賓客免費泊車優惠。",
+                gift_title: "數碼紅包與禮金",
+                gift_desc: "您的光臨是我們收到最珍貴的禮物。如果您想向我們送上額外祝福，我們非常感激您以蜜月基金的形式支持我們未來的旅程。",
+                gift_fps: "轉數快 (FPS) 識別碼",
+                gift_payme: "PayMe 手機轉帳",
+                gift_payme_desc: "婚宴現場提供二維碼掃描",
+                gift_traditional: "傳統紅包 (利是)",
+                gift_traditional_desc: "婚宴現場登記處設有利是箱",
+
+                acc_tag: "海外嘉賓專區",
+                acc_title: "推薦酒店住宿",
+                hotel1_badge: "婚宴主會場酒店",
+                hotel1_desc: "即婚禮與晚宴舉辦的地點。我們已為出席婚宴的賓客預留了專屬優惠房價，歡迎提前訂房。",
+                hotel2_badge: "太古廣場相連高奢酒店",
+                hotel2_desc: "坐落於太古廣場上蓋，與晚宴會館近在咫尺。室內行人天橋直達，步行極其省時方便。",
+                hotel3_badge: "精品設計奢華酒店",
+                hotel3_desc: "備受讚譽的奢華精品設計酒店，適合追求獨特美學與生活質感的旅客居住。",
+                btn_book_room: "預訂特惠房",
+                btn_view_rates: "查看房價",
+
+                rsvp_tag: "誠邀出席",
+                rsvp_title: "線上回覆 (RSVP)",
+                rsvp_deadline: "請於 2026 年 10 月 15 日或之前提交回覆",
+                rsvp_success_heading: "感謝您的回覆！",
+                btn_submit_another: "填寫另一位賓客",
+                frm_name_label: "賓客中文/英文全名",
+                frm_phone_label: "聯絡電話",
+                frm_phone_tip: "僅用於臨時調整桌席或發送即時通知。",
+                frm_rel_label: "您與新人的關係",
+                frm_rel_placeholder: "請選擇您與新人的關係",
+                frm_rel_tip: "這能協助我們輕鬆、流暢地安排晚宴桌席分佈。",
+                frm_att_label: "您當天會出席嗎？",
+                frm_att_accept: "欣然出席",
+                frm_att_decline: "遺憾缺席",
+                frm_seats_label: "預留出席人數",
+                frm_diet_label: "特殊飲食習慣或過敏對象",
+                btn_submit: "提交回覆",
+                btn_sending: "正在傳送回覆...",
+
+                rel_bride_family: "女方親友 (Bride's Family)",
+                rel_groom_family: "男方親友 (Groom's Family)",
+                rel_bride_friend: "女方同學/朋友",
+                rel_groom_friend: "男方同學/朋友",
+                rel_colleague: "同事伙伴",
+                rel_mutual: "共同好友",
+
+                seat_1: "1 位",
+                seat_2: "2 位 (含同行伴侶)",
+                seat_3: "3 位",
+                seat_4: "4 位",
+                seat_5: "5 位",
+
+                footer_date: "2026年11月28日 &bull; 香港金鐘",
+                footer_signature: "優雅細緻的美學設計，為愛與祝福完美打造。",
+
+                placeholder_name: "例如：陳小美 (Janice)",
+                placeholder_diet: "無、素食、不吃牛、海鮮過敏等"
+            }
+        };
+
+        // Function to set the website language dynamically
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Loop through all elements with 'data-i18n'
+            document.querySelectorAll('[data-i18n]').forEach((el) => {
+                const key = el.getAttribute('data-i18n');
+                if (LANG_DATA[lang] && LANG_DATA[lang][key]) {
+                    el.innerHTML = LANG_DATA[lang][key];
+                }
+            });
+
+            // Set inputs placeholder translations
+            const nameInput = document.getElementById('fullname');
+            const dietInput = document.getElementById('diet');
+            if (nameInput) nameInput.placeholder = LANG_DATA[lang]['placeholder_name'];
+            if (dietInput) dietInput.placeholder = LANG_DATA[lang]['placeholder_diet'];
+
+            // Style Active language toggle buttons
+            const activeClass = "font-bold text-brand-accent";
+            const inactiveClass = "text-brand-muted hover:text-brand-darkText font-medium";
+
+            // Header Language controls
+            const btnEn = document.getElementById('lang-btn-en');
+            const btnZh = document.getElementById('lang-btn-zh');
+            const mobBtnEn = document.getElementById('mob-lang-btn-en');
+            const mobBtnZh = document.getElementById('mob-lang-btn-zh');
+
+            if (lang === 'en') {
+                if (btnEn) btnEn.className = activeClass;
+                if (btnZh) btnZh.className = inactiveClass;
+                if (mobBtnEn) mobBtnEn.className = "font-bold text-brand-accent";
+                if (mobBtnZh) mobBtnZh.className = "text-brand-muted";
+            } else {
+                if (btnEn) btnEn.className = inactiveClass;
+                if (btnZh) btnZh.className = activeClass;
+                if (mobBtnEn) mobBtnEn.className = "text-brand-muted";
+                if (mobBtnZh) mobBtnZh.className = "font-bold text-brand-accent";
+            }
+
+            // Refresh ScrollTrigger to recalculate layout dimensions
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh();
+            }
+        }
+
+        // Setup countdown target date (Default set to November 28, 2026)
+        const targetDate = new Date("Nov 28, 2026 16:30:00").getTime();
+
+        // Mock seating organization dataset
+        const mockSeatingStats = {
+            'bride-family': 24,
+            'groom-family': 28,
+            'bride-friend': 15,
+            'groom-friend': 18,
+            'colleague': 12,
+            'mutual': 10
+        };
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }
+
+        // Initialize Countdown Interval
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Mobile Menu Toggle Code
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    menu.classList.add('flex', 'opacity-100');
+                }, 10);
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                menu.classList.remove('opacity-100');
+                setTimeout(() => {
+                    menu.classList.remove('flex');
+                    menu.classList.add('hidden');
+                }, 500);
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        // RSVP Form Interactivity States
+        function toggleAttendanceUI(status) {
+            const labelAccept = document.getElementById('label-accept');
+            const labelDecline = document.getElementById('label-decline');
+            const textAccept = document.getElementById('text-accept');
+            const textDecline = document.getElementById('text-decline');
+            const conditionalFields = document.getElementById('conditional-fields');
+
+            if (status === 'accept') {
+                labelAccept.className = "relative flex items-center justify-center border-2 border-brand-accent bg-brand-accent/5 p-4 rounded-xl cursor-pointer transition-all text-sm font-semibold";
+                labelDecline.className = "relative flex items-center justify-center border border-brand-accent/20 p-4 rounded-xl cursor-pointer hover:bg-brand-accent/5 transition-all text-sm font-medium";
+                textAccept.className = "text-brand-accentDark";
+                textDecline.className = "text-brand-muted";
+                
+                // Expand animated options
+                conditionalFields.style.maxHeight = "600px";
+                conditionalFields.style.opacity = "1";
+            } else {
+                labelAccept.className = "relative flex items-center justify-center border border-brand-accent/20 p-4 rounded-xl cursor-pointer hover:bg-brand-accent/5 transition-all text-sm font-medium";
+                labelDecline.className = "relative flex items-center justify-center border-2 border-brand-accent bg-brand-accent/5 p-4 rounded-xl cursor-pointer transition-all text-sm font-semibold";
+                textAccept.className = "text-brand-muted";
+                textDecline.className = "text-brand-accentDark";
+                
+                // Collapse animated options
+                conditionalFields.style.maxHeight = "0";
+                conditionalFields.style.opacity = "0";
+            }
+        }
+
+        function handleRSVPSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('wedding-rsvp-form');
+            const successState = document.getElementById('rsvp-success');
+            const name = document.getElementById('fullname').value;
+            const phone = document.getElementById('phone').value;
+            const relationshipVal = document.getElementById('relationship').value;
+            const status = document.querySelector('input[name="attendance"]:checked').value;
+            const successMsg = document.getElementById('success-msg');
+            const submitBtn = document.getElementById('submit-btn');
+
+            // Visual feedback - loading state
+            submitBtn.disabled = true;
+            const btnSendingText = LANG_DATA[currentLanguage]['btn_sending'];
+            submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> <span>${btnSendingText}</span>`;
+            lucide.createIcons();
+
+            const relationshipLabels = {
+                'en': {
+                    'bride-family': "Bride's Family",
+                    'groom-family': "Groom's Family",
+                    'bride-friend': "Bride's Friends/Classmates",
+                    'groom-friend': "Groom's Friends/Classmates",
+                    'colleague': "Colleague",
+                    'mutual': "Mutual Friend"
+                },
+                'zh': {
+                    'bride-family': "女方親友",
+                    'groom-family': "男方親友",
+                    'bride-friend': "女方同學/朋友",
+                    'groom-friend': "男方同學/朋友",
+                    'colleague': "同事伙伴",
+                    'mutual': "共同好友"
+                }
+            };
+
+            const relLabel = relationshipLabels[currentLanguage][relationshipVal] || "Friend / 朋友";
+            const seatsCount = status === 'accept' ? parseInt(document.getElementById('seats').value) : 0;
+            const dietRest = status === 'accept' ? document.getElementById('diet').value : "N/A";
+
+            // Prepare JSON payload for the Google Sheet POST API
+            const payload = {
+                fullname: name,
+                phone: phone,
+                relationship: relLabel,
+                attendance: status,
+                seats: seatsCount,
+                diet: dietRest
+            };
+
+            // Post request to Google Sheet API via no-cors wrapper
+            fetch(GOOGLE_SHEET_API_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "text/plain"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                // Succeeded posting to external DB. Transition UI state.
+                form.classList.add('hidden');
+                successState.classList.remove('hidden');
+
+                if (status === 'accept') {
+                    // Update the local dashboard simulation counters
+                    if (mockSeatingStats[relationshipVal] !== undefined) {
+                        mockSeatingStats[relationshipVal] += seatsCount;
+                        document.getElementById(`stat-${relationshipVal}`).innerText = mockSeatingStats[relationshipVal];
+                        
+                        // Recalculate total
+                        const totalExpected = Object.values(mockSeatingStats).reduce((a, b) => a + b, 0);
+                        document.getElementById('stat-total').innerText = totalExpected;
+                    }
+
+                    if (currentLanguage === 'en') {
+                        successMsg.innerHTML = `Hi <strong>${name}</strong>, we have registered your details in our master guest list sheet! We have categorized you into our <strong>${relLabel}</strong> table group to arrange seating layouts! We look forward to seeing you at the JW Marriott Hotel!`;
+                    } else {
+                        successMsg.innerHTML = `您好 <strong>${name}</strong>，我們已將您的回覆登記在總賓客名單中！系統已將您分配至 <strong>${relLabel}</strong> 桌席分組中，非常期待當天在金鐘萬豪酒店與您相聚慶祝！`;
+                    }
+                } else {
+                    if (currentLanguage === 'en') {
+                        successMsg.innerHTML = `Thank you for letting us know, <strong>${name}</strong>. Even though you cannot join us, we have noted your response in our sheet. You will be dearly missed on our special day!`;
+                    } else {
+                        successMsg.innerHTML = `謝謝您的回覆，<strong>${name}</strong>。即使您這次無法親自到場，我們也已將此狀態記錄在名單中。我們當天會深深想念您的身影！`;
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error("Submission failed: ", error);
+                form.classList.add('hidden');
+                successState.classList.remove('hidden');
+                if (currentLanguage === 'en') {
+                    successMsg.innerHTML = `Hi <strong>${name}</strong>, your response was submitted. (Note: External connection was simulated gracefully). We look forward to celebrating with you!`;
+                } else {
+                    successMsg.innerHTML = `您好 <strong>${name}</strong>，您的回覆已被成功提交（備註：資料庫已模擬對接）。非常期待當天與您共同慶祝！`;
+                }
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                const btnOriginalText = LANG_DATA[currentLanguage]['btn_submit'];
+                submitBtn.innerHTML = `<span>${btnOriginalText}</span>`;
+            });
+        }
+
+        function resetRSVPForm() {
+            const form = document.getElementById('wedding-rsvp-form');
+            const successState = document.getElementById('rsvp-success');
+            form.reset();
+            form.classList.remove('hidden');
+            successState.classList.add('hidden');
+            toggleAttendanceUI('reset');
+        }
+
+        function addToCalendar(eventType) {
+            let title = "";
+            let description = "";
+            let location = "";
+            let startISO = "";
+            let endISO = "";
+
+            if (currentLanguage === 'en') {
+                if (eventType === 'ceremony') {
+                    title = "Chloe & Adrian's Wedding Ceremony";
+                    description = "Join us as we exchange our vows and make our commitment official. Please arrive 15 minutes early.";
+                    location = "The Glass Pavilion, Admiralty, Hong Kong";
+                    startISO = "20261128T163000"; // Nov 28, 2026, 4:30 PM (Floating HKT)
+                    endISO = "20261128T173000";   // Nov 28, 2026, 5:30 PM
+                } else if (eventType === 'banquet') {
+                    title = "Chloe & Adrian's Evening Reception & Banquet";
+                    description = "Celebrate with us during our cocktail reception and elegant multi-course dinner banquet.";
+                    location = "Grand Ballroom, JW Marriott Hotel Hong Kong, Admiralty";
+                    startISO = "20261128T183000"; // Nov 28, 2026, 6:30 PM
+                    endISO = "20261128T233000";   // Nov 28, 2026, 11:30 PM
+                }
+            } else {
+                if (eventType === 'ceremony') {
+                    title = "葉晴 (Chloe) & 健朗 (Adrian) 證婚儀式";
+                    description = "誠邀您在溫馨優雅的戶外玻璃庭園中，共同見證我們的誓盟儀式。";
+                    location = "香港金鐘 戶外玻璃庭園";
+                    startISO = "20261128T163000";
+                    endISO = "20261128T173000";
+                } else if (eventType === 'banquet') {
+                    title = "葉晴 (Chloe) & 健朗 (Adrian) 婚禮晚宴";
+                    description = "敬邀出席我們的婚慶酒會與中式婚禮喜宴晚會。";
+                    location = "香港金鐘 萬豪酒店大宴會廳";
+                    startISO = "20261128T183000";
+                    endISO = "20261128T233000";
+                }
+            }
+
+            const icsContent = [
+                "BEGIN:VCALENDAR",
+                "VERSION:2.0",
+                "PRODID:-//Chloe and Adrian//Wedding Website//EN",
+                "BEGIN:VEVENT",
+                `UID:${eventType}_${Date.now()}@chloeandadrian.com`,
+                `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+                `DTSTART:${startISO}`,
+                `DTEND:${endISO}`,
+                `SUMMARY:${title}`,
+                `DESCRIPTION:${description}`,
+                `LOCATION:${location}`,
+                "END:VEVENT",
+                "END:VCALENDAR"
+            ].join("\r\n");
+
+            const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8;" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", `${eventType}_invite.ics`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        let isPanelCollapsed = false;
+        function toggleDemoPanel() {
+            const panel = document.getElementById('demo-panel');
+            const content = document.getElementById('demo-content');
+            const icon = document.getElementById('toggle-panel-icon');
+            
+            if (!isPanelCollapsed) {
+                content.classList.add('hidden');
+                panel.style.maxWidth = '180px';
+                icon.setAttribute('data-lucide', 'chevrons-left');
+                isPanelCollapsed = true;
+            } else {
+                content.classList.remove('hidden');
+                panel.style.maxWidth = '380px';
+                icon.setAttribute('data-lucide', 'chevrons-right');
+                isPanelCollapsed = false;
+            }
+            lucide.createIcons();
+        }
+
+        function toggleAccommodationSection() {
+            const section = document.getElementById('accommodation-section');
+            const navLink = document.getElementById('nav-accommodations-link');
+            const mobileLink = document.getElementById('mobile-accommodations-link');
+            const statusText = document.getElementById('accommodation-status-text');
+            const circle = document.getElementById('toggle-circle');
+            const btn = document.getElementById('accommodation-toggle-btn');
+
+            if (section.classList.contains('hidden')) {
+                // Turn on
+                section.classList.remove('hidden');
+                navLink.classList.remove('hidden');
+                mobileLink.classList.remove('hidden');
+                statusText.innerText = LANG_DATA[currentLanguage]['demo_acc_enabled'];
+                circle.className = "pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-4";
+                btn.className = "relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-emerald-600";
+            } else {
+                // Turn off
+                section.classList.add('hidden');
+                navLink.classList.add('hidden');
+                mobileLink.classList.add('hidden');
+                statusText.innerText = LANG_DATA[currentLanguage]['demo_acc_disabled'];
+                circle.className = "pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0";
+                btn.className = "relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-zinc-300";
+            }
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh();
+            }
+        }
+
+        function changeTheme(themeName) {
+            const config = {
+                champagne: {
+                    lightBg: '#FDFBF7',
+                    darkText: '#2C302E',
+                    accent: '#C5A880',
+                    accentDark: '#A3845B',
+                    cardBg: '#F5F1E9',
+                    muted: '#7E8280'
+                },
+                eucalyptus: {
+                    lightBg: '#FAFBF9',
+                    darkText: '#212C26',
+                    accent: '#6E8C77',
+                    accentDark: '#4C6654',
+                    cardBg: '#EFF2EE',
+                    muted: '#6B756F'
+                },
+                indigo: {
+                    lightBg: '#FCFAFB',
+                    darkText: '#2C2025',
+                    accent: '#B28E9D',
+                    accentDark: '#8A6574',
+                    cardBg: '#F7EFF2',
+                    muted: '#7A6970'
+                }
+            };
+
+            const colors = config[themeName];
+            
+            // Set dynamic inline style values
+            document.documentElement.style.setProperty('--brand-lightBg', colors.lightBg);
+            document.documentElement.style.setProperty('--brand-darkText', colors.darkText);
+            document.documentElement.style.setProperty('--brand-accent', colors.accent);
+            document.documentElement.style.setProperty('--brand-accentDark', colors.accentDark);
+            document.documentElement.style.setProperty('--brand-cardBg', colors.cardBg);
+            document.documentElement.style.setProperty('--brand-muted', colors.muted);
+
+            // Re-map tailwind configurations dynamically
+            tailwind.config.theme.extend.colors.brand = colors;
+            
+            // Trigger tailwind reload simulation by forcing layout reflow
+            document.body.style.display = 'none';
+            document.body.offsetHeight; // force reflow
+            document.body.style.display = '';
+        }
+
+        // Smooth scroll bar transparency transformation
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                header.classList.remove('bg-transparent', 'py-6');
+            } else {
+                header.classList.add('bg-transparent', 'py-6');
+                header.classList.remove('bg-white/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+            }
+        });
+
+        // Initialize Lucide Icons & GSAP on window load
+        window.onload = function() {
+            // Apply Show/Hide configuration for Seller Controls
+            if (!SHOW_DEMO_PANEL) {
+                const panel = document.getElementById('demo-panel');
+                if (panel) panel.remove();
+            }
+
+            // Apply selected default startup theme
+            changeTheme(DEFAULT_THEME);
+
+            // Set Initial Language values based on browser language, default to 'en'
+            const browserLang = navigator.language || navigator.userLanguage;
+            if (browserLang.startsWith('zh')) {
+                setLanguage('zh');
+            } else {
+                setLanguage('en');
+            }
+
+            lucide.createIcons();
+
+            // GSAP Scroll Trigger animation configurations
+            gsap.registerPlugin(ScrollTrigger);
+
+            const revealElements = document.querySelectorAll('.reveal-up');
+            revealElements.forEach((el) => {
+                gsap.to(el, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+        };
+    </script>
+</body>
+</html>
